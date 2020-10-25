@@ -11,15 +11,8 @@ namespace FakeItEasy.AutoFake
         /// Creates the instance of the <typeparamref name="T"/> type.
         /// </summary>
         /// <returns>The created instance.</returns>
-        public static T CreateInstance<T>(this IAutoFaker autoFaker)
-        {
-            if (autoFaker is null)
-            {
-                throw new ArgumentNullException(nameof(autoFaker));
-            }
-
-            return (T)autoFaker.CreateInstance(typeof(T));
-        }
+        public static T CreateInstance<T>(this IAutoFaker autoFaker, params IParameter[] parameters)
+            => (T)autoFaker.CreateInstance(typeof(T), parameters);
 
         /// <summary>
         /// Gets the service that will be provided by the AutoFake container. If the service of the
@@ -28,14 +21,7 @@ namespace FakeItEasy.AutoFake
         /// wasn't created yet it will create and return a new fake.
         /// </summary>
         /// <returns>The service instance.</returns>
-        public static T Get<T>(this IAutoFaker autoFaker) where T : class
-        {
-            if (autoFaker is null)
-            {
-                throw new ArgumentNullException(nameof(autoFaker));
-            }
-
-            return (T)autoFaker.Get(typeof(T));
-        }
+        public static T Get<T>(this IAutoFaker autoFaker) where T : class =>
+            (T)autoFaker.Get(typeof(T));
     }
 }

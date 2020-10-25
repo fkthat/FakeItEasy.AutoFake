@@ -10,14 +10,6 @@ namespace FakeItEasy.AutoFake
     public class Test_AutoFakerExtensions
     {
         [Fact]
-        public void CreateInstance_ShouldValidateArguments()
-        {
-            FluentActions.Invoking(() => AutoFakerExtensions.CreateInstance<object>(null))
-                .Should().Throw<ArgumentNullException>().Which.ParamName
-                .Should().Be("autoFaker");
-        }
-
-        [Fact]
         public void CreateInstance_ShouldCallAutoFakerCreateInstance()
         {
             var expected = new object();
@@ -25,14 +17,6 @@ namespace FakeItEasy.AutoFake
             A.CallTo(() => autoFaker.CreateInstance(typeof(object))).Returns(expected);
             var result = AutoFakerExtensions.CreateInstance<object>(autoFaker);
             result.Should().BeSameAs(expected);
-        }
-
-        [Fact]
-        public void Get_ShouldValidateArguments()
-        {
-            FluentActions.Invoking(() => AutoFakerExtensions.Get<object>(null))
-                .Should().Throw<ArgumentNullException>().Which.ParamName
-                .Should().Be("autoFaker");
         }
 
         [Fact]

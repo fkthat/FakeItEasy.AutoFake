@@ -15,7 +15,7 @@ namespace FakeItEasy.AutoFake
         /// </summary>
         /// <param name="type">The type of an instance to create.</param>
         /// <returns>The created instance.</returns>
-        object CreateInstance(Type type);
+        object CreateInstance(Type type, params IParameter[] parameters);
 
         /// <summary>
         /// Gets the service that will be provided by the AutoFake container. If the service of the

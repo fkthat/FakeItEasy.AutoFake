@@ -39,12 +39,18 @@ namespace FakeItEasy.AutoFake
         [Fact]
         public void CreateInstance_ShouldReturnNewInstance()
         {
+            var bar = typeof(Foo).GetConstructors()[0].GetParameters().Last();
+            var barParameter = A.Fake<IParameter>();
+            A.CallTo(() => barParameter.Match(bar)).Returns(true);
+            A.CallTo(() => barParameter.Resolve(bar)).Returns(42);
+
             var predefined = A.Fake<IPredefined>();
             var sut = new AutoFaker(config => config.Use(predefined));
-            var result = sut.CreateInstance(typeof(Foo));
+            var result = sut.CreateInstance(typeof(Foo), barParameter);
             var ofTypeFoo = result.Should().BeOfType<Foo>().Which;
             ofTypeFoo.AutoFaked.Should().BeSameAs(sut.Get(typeof(IAutoFaked)));
             ofTypeFoo.Predefined.Should().BeSameAs(predefined);
+            ofTypeFoo.Bar.Should().Be(42);
         }
 
         [Fact]
@@ -87,15 +93,18 @@ namespace FakeItEasy.AutoFake
 
         public class Foo
         {
-            public Foo(IAutoFaked autoFaked, IPredefined predefined)
+            public Foo(IAutoFaked autoFaked, IPredefined predefined, int bar)
             {
                 AutoFaked = autoFaked;
                 Predefined = predefined;
+                Bar = bar;
             }
 
             public IAutoFaked AutoFaked { get; }
 
             public IPredefined Predefined { get; }
+
+            public int Bar { get; }
         }
 
         // no public ctor
