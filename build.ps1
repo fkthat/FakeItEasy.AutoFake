@@ -31,7 +31,7 @@ if($Target -eq 'build' -or $Target -eq 'test' -or $Target -eq 'pack') {
         }
 
         if($Target -eq 'pack') {
-            BreakOnFail { dotnet pack -o '.build' --no-build }
+            BreakOnFail { dotnet pack -o '.build' --no-build -c $Config }
         }
     }
 

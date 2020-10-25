@@ -1,7 +1,7 @@
 <Project>
   <!-- Version -->
   <PropertyGroup>
-    <VersionPrefix>1.0.1</VersionPrefix>
+    <VersionPrefix>1.0.2</VersionPrefix>
   </PropertyGroup>
   <!-- package properties -->
   <PropertyGroup>
@@ -17,6 +17,7 @@
     <PackageTags>DI, Mock, FakeItEasy</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>A simple autofaking container for FakeItEasy.</Description>
+    <PackageReleaseNotes>Fix symbol package.</PackageReleaseNotes>
    </PropertyGroup>
   <!-- include symbols -->
   <PropertyGroup>
