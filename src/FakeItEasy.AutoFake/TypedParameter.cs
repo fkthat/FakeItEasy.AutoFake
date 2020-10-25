@@ -16,7 +16,7 @@ namespace FakeItEasy.AutoFake
         /// </summary>
         /// <param name="type">Parameter type to match.</param>
         /// <param name="value">The value to resolve paramtet to.</param>
-        public TypedParameter(Type type, object value)
+        public TypedParameter(Type type, object? value)
             : base(pi => pi.ParameterType == type, value)
         {
         }

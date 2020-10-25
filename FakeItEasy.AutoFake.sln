@@ -11,9 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{9FD71D4E-8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.FakeItEasy.AutoFake", "test\Test.FakeItEasy.AutoFake\Test.FakeItEasy.AutoFake.csproj", "{CE0A55B5-165E-415E-A434-74AC82F9E515}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{E1E260FC-710A-4358-9C24-D963B23ED550}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{E1E260FC-710A-4358-9C24-D963B23ED550}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.AutoFake.Samples", "sample\FakeItEasy.AutoFake.Samples\FakeItEasy.AutoFake.Samples.csproj", "{563FAA20-8786-42CD-A36A-BEEDDB3A5DE2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.AutoFake.Samples", "samples\FakeItEasy.AutoFake.Samples\FakeItEasy.AutoFake.Samples.csproj", "{563FAA20-8786-42CD-A36A-BEEDDB3A5DE2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

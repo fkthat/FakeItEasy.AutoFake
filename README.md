@@ -1,6 +1,9 @@
-# FakeItEasy.AutoFake
+[![Build Status](https://dev.azure.com/FkThat/FakeItEasy.AutoFake/_apis/build/status/FakeItEasy.AutoFake.CI?branchName=develop)](https://dev.azure.com/FkThat/FakeItEasy.AutoFake/_build/latest?definitionId=21&branchName=develop)
+![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/FkThat/FakeItEasy.AutoFake/21)
 
-A simple autofaking container for FakeItEasy.
+# FakeItEasy.AutoFake ![Nuget](https://img.shields.io/nuget/v/FakeItEasy.AutoFake)
+
+An auto-mocking container that generates mocks using FakeItEasy.
 
 ## Usage
 
@@ -38,7 +41,7 @@ accountService.Deposite(69);
 accountData.GetValue().Should().Be(111);
 ```
 
-### Usage with non-injectable parameters
+### Usage with parameters
 
 #### Named parameter
 
@@ -75,3 +78,17 @@ accountService.Deposite(100);
 // 42 + (100 - 10%) = 132
 A.CallTo(() => accountData.SetValue(132)).MustHaveHappened();
 ```
+
+### Multiple constructors support
+
+Since version 3.0.0 AutoFake supports classes with multiple constructors.
+
+CreateInstance selects the constructor with the maximum number of parameters all of which it
+can resolve.
+
+Parameters are resolved in the following order:
+
+* Parameter list provided with CreateInstance(...)
+* Predefined injectables configured with Use(...)
+* Dynamically created fakes
+

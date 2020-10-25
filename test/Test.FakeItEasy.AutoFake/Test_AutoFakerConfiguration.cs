@@ -21,14 +21,6 @@ namespace FakeItEasy.AutoFake
             var container = new Dictionary<Type, object>();
             var sut = new AutoFakerConfiguration(container);
 
-            sut.Invoking(s => s.Use(type: null, instance: A.Fake<IFoo>()))
-                .Should().Throw<ArgumentNullException>().Which.ParamName
-                .Should().Be("type");
-
-            sut.Invoking(s => s.Use(type: typeof(IFoo), instance: null))
-                .Should().Throw<ArgumentNullException>().Which.ParamName
-                .Should().Be("instance");
-
             // instance is not an instance of type
             sut.Invoking(s => s.Use(type: typeof(IFoo), instance: "Bar"))
                 .Should().Throw<ArgumentException>().Which.ParamName

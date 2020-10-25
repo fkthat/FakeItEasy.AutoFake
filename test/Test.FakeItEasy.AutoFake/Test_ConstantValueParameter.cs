@@ -14,7 +14,7 @@ namespace FakeItEasy.AutoFake
         [Fact]
         public void Match_ShouldCallCtorPredicate()
         {
-            var pi = GetType().GetMethod("Foo").GetParameters()[0];
+            var pi = GetType().GetMethod("Foo")!.GetParameters()[0];
             var match = A.Fake<Func<ParameterInfo, bool>>();
             A.CallTo(() => match(pi)).Returns(true);
             var sut = new ConstantValueParameter(match, 42);
@@ -24,14 +24,15 @@ namespace FakeItEasy.AutoFake
         [Fact]
         public void Resolve_ShouldUseCtorResolver()
         {
-            var pi = GetType().GetMethod("Foo").GetParameters()[0];
+            var pi = GetType().GetMethod("Foo")!.GetParameters()[0];
             var match = A.Dummy<Func<ParameterInfo, bool>>();
             var sut = new ConstantValueParameter(match, 42);
             sut.Resolve(pi).Should().Be(42);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage",
-            "xUnit1013:Public method should be marked as test", Justification = "<Pending>")]
+            "xUnit1013:Public method should be marked as test",
+            Justification = "This method is for tests.")]
         public void Foo(object foo) { }
     }
 }

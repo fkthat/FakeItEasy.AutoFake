@@ -1,9 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>false</IsPackable>
     <DisableStylecop>true</DisableStylecop>
     <RootNamespace>FakeItEasy.AutoFake</RootNamespace>
+    <Nullable>enable</Nullable>
+    <NoWarn>CA1062;$(NoWarn)</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FakeItEasy" Version="6.2.1" />

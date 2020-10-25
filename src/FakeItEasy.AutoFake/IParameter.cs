@@ -25,6 +25,6 @@ namespace FakeItEasy.AutoFake
         /// </summary>
         /// <param name="parameterInfo">The parameter information.</param>
         /// <returns>Resolved value. <br/></returns>
-        object Resolve(ParameterInfo parameterInfo);
+        object? Resolve(ParameterInfo parameterInfo);
     }
 }

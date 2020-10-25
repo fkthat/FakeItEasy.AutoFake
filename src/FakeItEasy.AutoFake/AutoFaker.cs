@@ -2,18 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using FakeItEasy.Core;
 
 namespace FakeItEasy.AutoFake
 {
     public class AutoFaker : IAutoFaker
     {
         private readonly IDictionary<Type, object> _container = new Dictionary<Type, object>();
+        private readonly IDictionary<Type, object> _predefined = new Dictionary<Type, object>();
 
         public AutoFaker(Action<IAutoFakerConfiguration>? configure = null)
         {
-            configure?.Invoke(new AutoFakerConfiguration(_container));
+            configure?.Invoke(new AutoFakerConfiguration(_predefined));
         }
 
         /// <summary>
@@ -23,64 +26,46 @@ namespace FakeItEasy.AutoFake
         /// <returns>The created instance.</returns>
         public object CreateInstance(Type type, params IParameter[] parameters)
         {
-            if (type is null)
+            object?[]? values = null;
+
+            foreach (var ctor in type.GetConstructors())
             {
-                throw new ArgumentNullException(nameof(type));
-            }
-
-            var ctors = type.GetConstructors();
-
-            // validate uniqueness of constructor
-            if (ctors.Length != 1)
-            {
-                throw new InvalidOperationException(
-                    $"The type {type} has no or more than one public constructors.");
-            }
-
-            var values = new List<object>();
-
-            foreach (var p in ctors[0].GetParameters())
-            {
-                var p1 = parameters.FirstOrDefault(x => x.Match(p));
-
-                if (p1 != null)
+                try
                 {
-                    values.Add(p1.Resolve(p));
+                    var values2 = Resolve(ctor.GetParameters(), parameters);
+
+                    if (values == null || values.Length < values2.Length)
+                    {
+                        values = values2;
+                    }
+                }
+                catch (FakeCreationException)
+                {
                     continue;
                 }
-
-                if (p.ParameterType.IsValueType)
-                {
-                    throw new InvalidOperationException(
-                        $"One of the type {type} " +
-                        "constructor parameters is not of a reference type.");
-                }
-
-                values.Add(Get(p.ParameterType));
             }
 
-            return Activator.CreateInstance(type, values.ToArray());
+            if (values != null)
+            {
+                return Activator.CreateInstance(type, values);
+            }
+
+            throw new InvalidOperationException(
+                $"No suitable constructor to create an instance of {type}");
         }
 
         /// <summary>
-        /// Gets the service that will be provided by the AutoFake container. If the service of the
-        /// <paramref name="type"/> type is provided by <see cref="IAutoFakerConfiguration.Use"/> it
-        /// will return the instance provided. If a fake service of the <paramref name="type"/>
-        /// wasn't created yet it will create and return a new fake.
+        /// Gets the service that will be provided by the AutoFake container. If a fake service of
+        /// the <paramref name="type"/> wasn't created yet it will create and return a new fake.
         /// </summary>
         /// <param name="type">The type of a service.</param>
         /// <returns>The service instance.</returns>
         public object Get(Type type)
         {
-            if (type is null)
+            if (_predefined.ContainsKey(type))
             {
-                throw new ArgumentNullException(nameof(type));
-            }
-
-            if (type.IsValueType)
-            {
-                throw new ArgumentException(
-                    $"The type {type} is not a class, interface, or delegate.", nameof(type));
+                throw new ArgumentException($"{type} is configured as predefined dependency.",
+                    nameof(type));
             }
 
             if (!_container.TryGetValue(type, out object value))
@@ -90,6 +75,26 @@ namespace FakeItEasy.AutoFake
             }
 
             return value;
+        }
+
+        private object?[] Resolve(ParameterInfo[] pis, IParameter[] parameters) =>
+            pis.Select(p => Resolve(p, parameters)).ToArray();
+
+        private object? Resolve(ParameterInfo pi, IParameter[] parameters)
+        {
+            var p = parameters.FirstOrDefault(x => x.Match(pi));
+
+            if (p != null)
+            {
+                return p.Resolve(pi);
+            }
+
+            if (_predefined.ContainsKey(pi.ParameterType))
+            {
+                return _predefined[pi.ParameterType];
+            }
+
+            return Get(pi.ParameterType);
         }
     }
 }

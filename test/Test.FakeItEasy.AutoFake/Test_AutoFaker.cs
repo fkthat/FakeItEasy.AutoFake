@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FakeItEasy.Core;
 using FluentAssertions;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace FakeItEasy.AutoFake
@@ -18,51 +20,22 @@ namespace FakeItEasy.AutoFake
         }
 
         [Fact]
-        public void CreateInstance_ShouldValidateArguments()
-        {
-            var sut = new AutoFaker();
-
-            sut.Invoking(s => s.CreateInstance(null))
-                .Should().Throw<ArgumentNullException>().Which
-                .ParamName.Should().Be("type");
-
-            sut.Invoking(s => s.CreateInstance(typeof(Bad0)))
-                .Should().Throw<InvalidOperationException>();
-
-            sut.Invoking(s => s.CreateInstance(typeof(Bad1)))
-                .Should().Throw<InvalidOperationException>();
-
-            sut.Invoking(s => s.CreateInstance(typeof(Bad2)))
-                .Should().Throw<InvalidOperationException>();
-        }
-
-        [Fact]
         public void CreateInstance_ShouldReturnNewInstance()
         {
-            var bar = typeof(Foo).GetConstructors()[0].GetParameters().Last();
-            var barParameter = A.Fake<IParameter>();
-            A.CallTo(() => barParameter.Match(bar)).Returns(true);
-            A.CallTo(() => barParameter.Resolve(bar)).Returns(42);
-
             var predefined = A.Fake<IPredefined>();
-            var sut = new AutoFaker(config => config.Use(predefined));
-            var result = sut.CreateInstance(typeof(Foo), barParameter);
-            var ofTypeFoo = result.Should().BeOfType<Foo>().Which;
-            ofTypeFoo.AutoFaked.Should().BeSameAs(sut.Get(typeof(IAutoFaked)));
-            ofTypeFoo.Predefined.Should().BeSameAs(predefined);
-            ofTypeFoo.Bar.Should().Be(42);
+            var sut = new AutoFaker(configure => configure.Use(predefined));
+            var result = sut.CreateInstance<Foo>(new TypedParameter<int>(42));
+            result.AutoFaked.Should().BeAssignableTo<IAutoFaked>();
+            result.Predefined.Should().Be(predefined);
+            result.Bar.Should().Be(42);
         }
 
         [Fact]
-        public void Get_ShouldValidateArguments()
+        public void CreateInstance_WithNoCtor_ShouldThrow()
         {
             var sut = new AutoFaker();
-
-            sut.Invoking(s => s.Get(null)).Should().Throw<ArgumentNullException>().Which
-                .ParamName.Should().Be("type");
-
-            sut.Invoking(s => s.Get(typeof(int))).Should().Throw<ArgumentException>().Which
-                .ParamName.Should().Be("type");
+            sut.Invoking(s => s.CreateInstance<Bad>())
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -83,16 +56,38 @@ namespace FakeItEasy.AutoFake
         }
 
         [Fact]
-        public void Get_ShouldReturnPredefinedFake()
+        public void Get_ShouldThrowWithPredefined()
         {
             var predefined = A.Fake<IPredefined>();
             var sut = new AutoFaker(config => config.Use(predefined));
-            var result = sut.Get(typeof(IPredefined));
-            result.Should().BeSameAs(predefined);
+            sut.Invoking(s => s.Get(typeof(IPredefined))).Should().Throw<ArgumentException>();
+        }
+
+        [Fact]
+        public void Fake_WithNonFakeableType_ShouldThrowFakeCreationException()
+        {
+            FluentActions.Invoking(() => Sdk.Create.Fake(typeof(int)))
+                .Should().Throw<FakeCreationException>();
         }
 
         public class Foo
         {
+            // not selected
+            public Foo()
+            {
+            }
+
+            // not selected
+            public Foo(IAutoFaked autoFaked, IPredefined predefined)
+            {
+            }
+
+            // not selected
+            public Foo(IAutoFaked autoFaked, IPredefined predefined, string bar)
+            {
+            }
+
+            // this one will be selected
             public Foo(IAutoFaked autoFaked, IPredefined predefined, int bar)
             {
                 AutoFaked = autoFaked;
@@ -100,37 +95,17 @@ namespace FakeItEasy.AutoFake
                 Bar = bar;
             }
 
-            public IAutoFaked AutoFaked { get; }
+            public IAutoFaked? AutoFaked { get; }
 
-            public IPredefined Predefined { get; }
+            public IPredefined? Predefined { get; }
 
             public int Bar { get; }
         }
 
-        // no public ctor
-        public class Bad0
+        // no suitable ctor
+        public class Bad
         {
-            protected Bad0()
-            {
-            }
-        }
-
-        // more than one public ctors
-        public class Bad1
-        {
-            public Bad1()
-            {
-            }
-
-            public Bad1(IAutoFaked autoFaked)
-            {
-            }
-        }
-
-        // ctor with not-reference args
-        public class Bad2
-        {
-            public Bad2(IAutoFaked autoFaked, int arg)
+            protected Bad()
             {
             }
         }

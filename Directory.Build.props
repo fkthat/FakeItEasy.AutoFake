@@ -1,7 +1,7 @@
 <Project>
   <!-- Version -->
   <PropertyGroup>
-    <VersionPrefix>2.0.0</VersionPrefix>
+    <VersionPrefix>3.0.0</VersionPrefix>
   </PropertyGroup>
   <!-- package properties -->
   <PropertyGroup>
@@ -16,12 +16,17 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>DI, Mock, FakeItEasy</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Description>A simple autofaking container for FakeItEasy.</Description>
-    <PackageReleaseNotes>Add support of non-injectable parameters.</PackageReleaseNotes>
+    <Description>An auto-mocking container that generates mocks using FakeItEasy</Description>
+    <PackageReleaseNotes>@(ReleaseNoteLines, '%0a')</PackageReleaseNotes>
    </PropertyGroup>
   <!-- include symbols -->
   <PropertyGroup>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+  <Target Name="PreparePackageReleaseNotesFromFile" BeforeTargets="GenerateNuspec">
+    <ReadLinesFromFile File="../../RELEASE-NOTES" >
+      <Output TaskParameter="Lines" ItemName="ReleaseNoteLines"/>
+    </ReadLinesFromFile>
+  </Target>
 </Project>

@@ -12,7 +12,7 @@ namespace FakeItEasy.AutoFake
     public class ResolvedParameter : IParameter
     {
         private readonly Func<ParameterInfo, bool> _match;
-        private readonly Func<ParameterInfo, object> _resolve;
+        private readonly Func<ParameterInfo, object?> _resolve;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ResolvedParameter"/> class.
@@ -21,7 +21,7 @@ namespace FakeItEasy.AutoFake
         /// <param name="resolve">The resolve function.</param>
         public ResolvedParameter(
             Func<ParameterInfo, bool> match,
-            Func<ParameterInfo, object> resolve)
+            Func<ParameterInfo, object?> resolve)
         {
             _match = match;
             _resolve = resolve;
@@ -43,6 +43,6 @@ namespace FakeItEasy.AutoFake
         /// <param name="parameterInfo">The parameter information.</param>
         /// <returns>Resolved value. <br/></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public object Resolve(ParameterInfo parameterInfo) => _resolve(parameterInfo);
+        public object? Resolve(ParameterInfo parameterInfo) => _resolve(parameterInfo);
     }
 }

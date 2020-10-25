@@ -18,19 +18,6 @@ namespace FakeItEasy.AutoFake
         /// <paramref name="configuration"/> or <paramref name="instance"/> is null.
         /// </exception>
         public static IAutoFakerConfiguration Use<T>(this IAutoFakerConfiguration configuration,
-            T instance) where T : class
-        {
-            if (configuration is null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
-            if (instance is null)
-            {
-                throw new ArgumentNullException(nameof(instance));
-            }
-
-            return configuration.Use(typeof(T), instance);
-        }
+            T instance) where T : class => configuration.Use(typeof(T), instance);
     }
 }

@@ -12,23 +12,6 @@ namespace FakeItEasy.AutoFake
     public class Test_AutoFakerConfigurationExtensions
     {
         [Fact]
-        public void Use_ShouldValidateArguments()
-        {
-            var configuration = A.Fake<IAutoFakerConfiguration>();
-            var instance = new Foo();
-
-            FluentActions.Invoking(() =>
-                AutoFakerConfigurationExtensions.Use(configuration: null, instance))
-                .Should().Throw<ArgumentNullException>().Which.ParamName.Should()
-                .Be(nameof(configuration));
-
-            FluentActions.Invoking(() =>
-                AutoFakerConfigurationExtensions.Use(configuration, instance: (Foo)null))
-                .Should().Throw<ArgumentNullException>().Which.ParamName.Should()
-                .Be(nameof(instance));
-        }
-
-        [Fact]
         public void Use_ShouldCallConfiguration()
         {
             var configuration = A.Fake<IAutoFakerConfiguration>();

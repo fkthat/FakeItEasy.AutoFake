@@ -16,7 +16,7 @@ namespace FakeItEasy.AutoFake
         /// </summary>
         /// <param name="match">The match predicate.</param>
         /// <param name="value">The value to resolve paramtet to.</param>
-        public ConstantValueParameter(Func<ParameterInfo, bool> match, object value)
+        public ConstantValueParameter(Func<ParameterInfo, bool> match, object? value)
             : base(match, pi => value)
         {
         }

@@ -16,7 +16,7 @@ namespace FakeItEasy.AutoFake
         /// </summary>
         /// <param name="name">Parameter name to match.</param>
         /// <param name="value">The value to resolve paramtet to.</param>
-        public NamedParameter(string name, object value)
+        public NamedParameter(string name, object? value)
             : base(pi => pi.Name == name, value)
         {
         }

@@ -17,16 +17,6 @@ namespace FakeItEasy.AutoFake
 
         public IAutoFakerConfiguration Use(Type type, object instance)
         {
-            if (type is null)
-            {
-                throw new ArgumentNullException(nameof(type));
-            }
-
-            if (instance is null)
-            {
-                throw new ArgumentNullException(nameof(instance));
-            }
-
             if (!type.IsAssignableFrom(instance.GetType()))
             {
                 throw new ArgumentException(

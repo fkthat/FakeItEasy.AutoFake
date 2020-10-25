@@ -4,7 +4,6 @@ trigger:
 - develop
 - release/*
 - master
-- refs/tags/*
 
 pool:
   vmImage: ubuntu-latest
@@ -15,13 +14,10 @@ variables:
   
 steps:
 
-- task: Bash@3
-  displayName: SetVersionSuffix
-  condition: not(startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+- task: UseDotNet@2
   inputs:
-    targetType: 'inline'
-    script: |
-       echo "##vso[task.setvariable variable=VersionSuffix]CI-$(Build.BuildNumber)"
+    packageType: 'sdk'
+    useGlobalJson: true
 
 - task: DotNetCoreCLI@2
   displayName: Restore
@@ -47,17 +43,40 @@ steps:
     codeCoverageTool: 'Cobertura'
     summaryFileLocation: 'test/**/coverage.cobertura.xml'
 
+- task: Bash@3
+  condition: not(eq(variables['Build.SourceBranchName'], 'master'))
+  displayName: Set VersionSuffix
+  inputs:
+    targetType: inline
+    script: |
+      echo "##vso[task.setvariable variable=VersionSuffix]CI-$(Build.BuildNumber)"
+    
 - task: DotNetCoreCLI@2
   displayName: Pack
   inputs:
     command: 'custom'
+    projects: 'src/**/*.csproj'
     custom: 'pack'
-    arguments: '-o $(Build.ArtifactStagingDirectory) -c $(BuildConfiguration) -p:VersionSuffix=$(VersionSuffix) --no-build'
+    arguments: '-c $(BuildConfiguration) -p:VersionSuffix=$(VersionSuffix) -o $(Build.ArtifactStagingDirectory)'
 
 - task: DotNetCoreCLI@2
-  displayName: Push
+  displayName: Push (Local)
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
     nuGetFeedType: 'internal'
-    publishVstsFeed: 'c472e21d-e222-44fd-9261-9d76d8c0fb53/24aa52ca-735d-4e91-8f45-434760e31803'
+    publishVstsFeed: 'FakeItEasy.AutoFake/Main'
+
+- task: DotNetCoreCLI@2
+  condition: eq(variables['Build.SourceBranchName'], 'master')
+  displayName: Push (NuGet.org)
+  inputs:
+    command: 'custom'
+    custom: 'nuget'
+    arguments: 'push $(Build.ArtifactStagingDirectory)/*.nupkg -s $(NuGetUrl) -k $(NuGetKey)'
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      ls $(Build.ArtifactStagingDirectory)
