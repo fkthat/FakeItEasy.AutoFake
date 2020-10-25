@@ -1,16 +1,11 @@
 [CmdletBinding()]
 param (
-    [Parameter(Position = 0)]
-    [ValidateSet('build', 'test', 'clean', 'pack')]
-    [string]
-    $Target = 'build',
-    [Parameter()]
-    [ValidateSet('Debug', 'Release')]
-    $Config = 'Debug'
+    [Parameter(Position = 0)][ValidateSet('build', 'test', 'clean', 'pack')] $Target = 'build',
+    [Parameter()][ValidateSet('Debug', 'Release')] $Config = 'Debug',
+    [Parameter()] [Switch] $ShowCoverageReport = $false
 )
 
-function BreakOnFail($p) {
-    & $p
+function BreakOnFail($p) { & $p
     if($LASTEXITCODE -ne 0) { break }
 }
 
@@ -26,12 +21,14 @@ if($Target -eq 'build' -or $Target -eq 'test' -or $Target -eq 'pack') {
     if($Target -eq 'test' -or $Target -eq 'pack') {
         BreakOnFail { dotnet test --no-build -c $Config }
 
-        BreakOnFail { dotnet tool restore }
+        if($ShowCoverageReport) {
+            BreakOnFail { dotnet tool restore }
 
-        BreakOnFail { dotnet tool run reportgenerator `
-            -reports:**\coverage.cobertura.xml -targetdir:.coverage }
+            BreakOnFail { dotnet tool run reportgenerator `
+                -reports:**\coverage.cobertura.xml -targetdir:.coverage }
 
-        Start-Process '.coverage\index.htm'
+            Start-Process '.coverage\index.htm'
+        }
 
         if($Target -eq 'pack') {
             BreakOnFail { dotnet pack -o '.build' --no-build }
