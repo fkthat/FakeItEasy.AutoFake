@@ -11,8 +11,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <AssemblyVersion>$(VersionPrefix).0</AssemblyVersion>
     <FileVersion>$(VersionPrefix).0</FileVersion>
-    <PackageProjectUrl>https://github.com/rodion73/FakeItEasy.AutoFake</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/rodion73/FakeItEasy.AutoFake</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/fkthat/FakeItEasy.AutoFake</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/fkthat/FakeItEasy.AutoFake</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>DI, Mock, FakeItEasy</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
