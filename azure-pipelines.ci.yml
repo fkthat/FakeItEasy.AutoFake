@@ -44,8 +44,7 @@ steps:
     summaryFileLocation: 'test/**/coverage.cobertura.xml'
 
 - task: Bash@3
-  condition: not(eq(variables['Build.SourceBranchName'], 'master'))
-  displayName: Set VersionSuffix
+  displayName: SetVersionSuffix
   inputs:
     targetType: inline
     script: |
@@ -65,15 +64,7 @@ steps:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
     nuGetFeedType: 'internal'
-    publishVstsFeed: 'FakeItEasy.AutoFake/Main'
-
-- task: DotNetCoreCLI@2
-  condition: eq(variables['Build.SourceBranchName'], 'master')
-  displayName: Push (NuGet.org)
-  inputs:
-    command: 'custom'
-    custom: 'nuget'
-    arguments: 'push $(Build.ArtifactStagingDirectory)/*.nupkg -s $(NuGetUrl) -k $(NuGetKey)'
+    publishVstsFeed: 'FakeItEasy.AutoFake/CI'
 
 - task: Bash@3
   inputs:
