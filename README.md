@@ -1,5 +1,5 @@
-[![Build Status](https://dev.azure.com/FkThat/FakeItEasy.AutoFake/_apis/build/status/FakeItEasy.AutoFake.CI?branchName=develop)](https://dev.azure.com/FkThat/FakeItEasy.AutoFake/_build/latest?definitionId=21&branchName=develop)
-![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/FkThat/FakeItEasy.AutoFake/21)
+[![Build Status](https://dev.azure.com/FkThat/FakeItEasy.AutoFake/_apis/build/status/CI?branchName=develop)](https://dev.azure.com/FkThat/FakeItEasy.AutoFake/_build/latest?definitionId=24&branchName=develop)
+![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/FkThat/FakeItEasy.AutoFake/24)
 
 # FakeItEasy.AutoFake ![Nuget](https://img.shields.io/nuget/v/FakeItEasy.AutoFake)
 
