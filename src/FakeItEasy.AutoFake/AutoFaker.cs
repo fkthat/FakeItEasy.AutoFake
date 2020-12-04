@@ -47,7 +47,7 @@ namespace FakeItEasy.AutoFake
 
             if (values != null)
             {
-                return Activator.CreateInstance(type, values);
+                return Activator.CreateInstance(type, values)!;
             }
 
             throw new InvalidOperationException(
@@ -68,10 +68,10 @@ namespace FakeItEasy.AutoFake
                     nameof(type));
             }
 
-            if (!_container.TryGetValue(type, out object value))
+            if (!_container.TryGetValue(type, out object? value))
             {
                 value = Sdk.Create.Fake(type);
-                _container.Add(type, value);
+                _container.Add(type, value!);
             }
 
             return value;
