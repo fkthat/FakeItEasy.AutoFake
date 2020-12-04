@@ -10,7 +10,7 @@ pool:
 
 variables:
   BuildConfiguration: Release
-  VersionSuffix: ""
+  VersionSuffix: CI-$(Build.BuildNumber)
   
 steps:
 
@@ -42,13 +42,6 @@ steps:
   inputs:
     codeCoverageTool: 'Cobertura'
     summaryFileLocation: 'test/**/coverage.cobertura.xml'
-
-- task: Bash@3
-  displayName: SetVersionSuffix
-  inputs:
-    targetType: inline
-    script: |
-      echo "##vso[task.setvariable variable=VersionSuffix]CI-$(Build.BuildNumber)"
     
 - task: DotNetCoreCLI@2
   displayName: Pack
@@ -59,7 +52,7 @@ steps:
     arguments: '-c $(BuildConfiguration) -p:VersionSuffix=$(VersionSuffix) -o $(Build.ArtifactStagingDirectory)'
 
 - task: DotNetCoreCLI@2
-  displayName: Push (Local)
+  displayName: Push
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
