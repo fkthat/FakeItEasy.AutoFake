@@ -24,7 +24,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
   <Target Name="PreparePackageReleaseNotesFromFile" BeforeTargets="GenerateNuspec">
-    <ReadLinesFromFile File="../../RELEASE-NOTES" >
+    <ReadLinesFromFile File="../../RELEASE-NOTES.txt" >
       <Output TaskParameter="Lines" ItemName="ReleaseNoteLines"/>
     </ReadLinesFromFile>
   </Target>
