@@ -6,11 +6,10 @@ trigger:
 - master
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: ubuntu-20.04
 
 variables:
   BuildConfiguration: Release
-  VersionSuffix: ""
   
 steps:
 
@@ -39,35 +38,7 @@ steps:
     arguments: -c $(BuildConfiguration) --no-build
 
 - task: PublishCodeCoverageResults@1
+  displayName: CodeCoverage
   inputs:
     codeCoverageTool: 'Cobertura'
     summaryFileLocation: 'test/**/coverage.cobertura.xml'
-
-- task: Bash@3
-  displayName: SetVersionSuffix
-  inputs:
-    targetType: inline
-    script: |
-      echo "##vso[task.setvariable variable=VersionSuffix]CI-$(Build.BuildNumber)"
-    
-- task: DotNetCoreCLI@2
-  displayName: Pack
-  inputs:
-    command: 'custom'
-    projects: 'src/**/*.csproj'
-    custom: 'pack'
-    arguments: '-c $(BuildConfiguration) -p:VersionSuffix=$(VersionSuffix) -o $(Build.ArtifactStagingDirectory)'
-
-- task: DotNetCoreCLI@2
-  displayName: Push (Local)
-  inputs:
-    command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-    nuGetFeedType: 'internal'
-    publishVstsFeed: 'FakeItEasy.AutoFake/CI'
-
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: |
-      ls $(Build.ArtifactStagingDirectory)
