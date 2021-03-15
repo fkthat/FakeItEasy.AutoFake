@@ -1,21 +1,20 @@
 <Project>
   <!-- Version -->
   <PropertyGroup>
-    <VersionPrefix>3.1.0</VersionPrefix>
+    <VersionPrefix>3.2.0</VersionPrefix>
   </PropertyGroup>
   <!-- package properties -->
   <PropertyGroup>
     <Authors>FkThat</Authors>
     <Company>FkThat</Company>
-    <Copyright>© FkThat, 2020</Copyright>
+    <Copyright>© FkThat, 2021</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <AssemblyVersion>$(VersionPrefix).0</AssemblyVersion>
     <FileVersion>$(VersionPrefix).0</FileVersion>
     <PackageProjectUrl>https://github.com/fkthat/FakeItEasy.AutoFake</PackageProjectUrl>
     <RepositoryUrl>https://github.com/fkthat/FakeItEasy.AutoFake</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>DI, Mock, FakeItEasy</PackageTags>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>fkthat,di,mock,fakeiteasy</PackageTags>
     <Description>An auto-mocking container that generates mocks using FakeItEasy</Description>
     <PackageReleaseNotes>@(ReleaseNoteLines, '%0a')</PackageReleaseNotes>
    </PropertyGroup>
