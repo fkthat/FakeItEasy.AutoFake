@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 using FakeItEasy.Core;
 
 namespace FakeItEasy.AutoFake
@@ -14,10 +11,30 @@ namespace FakeItEasy.AutoFake
         private readonly IDictionary<Type, object> _container = new Dictionary<Type, object>();
         private readonly IDictionary<Type, object> _predefined = new Dictionary<Type, object>();
 
-        public AutoFaker(Action<IAutoFakerConfiguration>? configure = null)
+        /// <summary>
+        /// Provide a predefined instance of a service to inject later to created objects.
+        /// </summary>
+        /// <param name="type">The service type.</param>
+        /// <param name="instance">The service instance.</param>
+        public AutoFaker Use(Type type, object instance)
         {
-            configure?.Invoke(new AutoFakerConfiguration(_predefined));
+            if (!type.IsAssignableFrom(instance.GetType()))
+            {
+                throw new ArgumentException(
+                    $"The {nameof(instance)} is not of the {type} type.",
+                    nameof(instance));
+            }
+
+            _predefined.Add(type, instance);
+            return this;
         }
+
+        /// <summary>
+        /// Provide a predefined instance of a service to inject later to created objects.
+        /// </summary>
+        /// <typeparam name="T">The service type.</typeparam>
+        /// <param name="instance">The service instance.</param>
+        public AutoFaker Use<T>(T instance) where T : class => Use(typeof(T), instance);
 
         /// <summary>
         /// Creates the instance of the <paramref name="type"/> type.
@@ -62,12 +79,6 @@ namespace FakeItEasy.AutoFake
         /// <returns>The service instance.</returns>
         public object Get(Type type)
         {
-            if (_predefined.ContainsKey(type))
-            {
-                throw new ArgumentException($"{type} is configured as predefined dependency.",
-                    nameof(type));
-            }
-
             if (!_container.TryGetValue(type, out object value))
             {
                 value = Sdk.Create.Fake(type);
@@ -76,6 +87,15 @@ namespace FakeItEasy.AutoFake
 
             return value;
         }
+
+        /// <summary>
+        /// Gets the service that will be provided by the AutoFake container. If the service of the
+        /// <typeparamref name="T"/> type is provided by <see cref="IAutoMockerConfiguration.Use"/>
+        /// it will return the instance provided. If a fake service of the <typeparamref name="T"/>
+        /// wasn't created yet it will create and return a new fake.
+        /// </summary>
+        /// <returns>The service instance.</returns>
+        public T Get<T>() where T : class => (T)Get(typeof(T));
 
         private object?[] Resolve(ParameterInfo[] pis, IParameter[] parameters) =>
             pis.Select(p => Resolve(p, parameters)).ToArray();

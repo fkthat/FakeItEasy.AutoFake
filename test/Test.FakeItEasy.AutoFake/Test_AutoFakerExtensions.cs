@@ -18,15 +18,5 @@ namespace FakeItEasy.AutoFake
             var result = AutoFakerExtensions.CreateInstance<object>(autoFaker);
             result.Should().BeSameAs(expected);
         }
-
-        [Fact]
-        public void Get_ShouldCallAutoFakerGet()
-        {
-            var expected = new object();
-            var autoFaker = A.Fake<IAutoFaker>();
-            A.CallTo(() => autoFaker.Get(typeof(object))).Returns(expected);
-            var result = AutoFakerExtensions.Get<object>(autoFaker);
-            result.Should().BeSameAs(expected);
-        }
     }
 }

@@ -1,7 +1,7 @@
 <Project>
   <!-- Version -->
   <PropertyGroup>
-    <VersionPrefix>3.2.0</VersionPrefix>
+    <VersionPrefix>4.0.0</VersionPrefix>
   </PropertyGroup>
   <!-- package properties -->
   <PropertyGroup>
@@ -11,11 +11,11 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <AssemblyVersion>$(VersionPrefix).0</AssemblyVersion>
     <FileVersion>$(VersionPrefix).0</FileVersion>
-    <PackageProjectUrl>https://github.com/fkthat/FakeItEasy.AutoFake</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/fkthat/FakeItEasy.AutoFake</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/fkthat/AutoFake</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/fkthat/AutoFake</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>fkthat,di,mock,fakeiteasy</PackageTags>
-    <Description>An auto-mocking container that generates mocks using FakeItEasy</Description>
+    <Description>An auto-mocking container that generates mocks using FakeItEasy.</Description>
     <PackageReleaseNotes>@(ReleaseNoteLines, '%0a')</PackageReleaseNotes>
    </PropertyGroup>
   <!-- include symbols -->

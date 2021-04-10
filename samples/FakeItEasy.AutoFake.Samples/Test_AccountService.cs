@@ -14,14 +14,10 @@ namespace FakeItEasy.AutoFake.Samples
         public void Deposite_ShouldAddAccountValue()
         {
             var faker = new AutoFaker();
-
             var accountData = faker.Get<IAccountData>();
-
             A.CallTo(() => accountData.GetValue()).Returns(42);
-
             var accountService = faker.CreateInstance<AccountService>();
             accountService.Deposite(69);
-
             A.CallTo(() => accountData.SetValue(111)).MustHaveHappened();
         }
 
@@ -29,12 +25,9 @@ namespace FakeItEasy.AutoFake.Samples
         public void Deposite_ShouldAddAccountValue_2()
         {
             var accountData = new AccountData(42);
-
-            var faker = new AutoFaker(configure => configure.Use<IAccountData>(accountData));
-
+            var faker = new AutoFaker().Use<IAccountData>(accountData);
             var accountService = faker.CreateInstance<AccountService>();
             accountService.Deposite(69);
-
             accountData.GetValue().Should().Be(111);
         }
     }
