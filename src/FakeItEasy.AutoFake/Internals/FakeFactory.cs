@@ -3,7 +3,7 @@ using FakeItEasy.Core;
 
 namespace FakeItEasy.AutoFake.Internals
 {
-    internal class FakeFactory
+    internal class FakeFactory : IFakeFactory
     {
         public object? Get(Type type)
         {
