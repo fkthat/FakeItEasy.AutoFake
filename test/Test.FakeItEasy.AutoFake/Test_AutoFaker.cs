@@ -20,17 +20,6 @@ namespace FakeItEasy.AutoFake
         }
 
         [Fact]
-        public void CreateInstance_ShouldReturnNewInstance()
-        {
-            var predefined = A.Fake<IPredefined>();
-            var sut = new AutoFaker(configure => configure.Use(predefined));
-            var result = sut.CreateInstance<Foo>(new TypedParameter<int>(42));
-            result.AutoFaked.Should().BeAssignableTo<IAutoFaked>();
-            result.Predefined.Should().Be(predefined);
-            result.Bar.Should().Be(42);
-        }
-
-        [Fact]
         public void CreateInstance_WithNoCtor_ShouldThrow()
         {
             var sut = new AutoFaker();

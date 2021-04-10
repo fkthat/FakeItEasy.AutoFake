@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 using FakeItEasy.Core;
 
 namespace FakeItEasy.AutoFake
@@ -14,10 +11,30 @@ namespace FakeItEasy.AutoFake
         private readonly IDictionary<Type, object> _container = new Dictionary<Type, object>();
         private readonly IDictionary<Type, object> _predefined = new Dictionary<Type, object>();
 
-        public AutoFaker(Action<IAutoFakerConfiguration>? configure = null)
+        /// <summary>
+        /// Provide a predefined instance of a service to inject later to created objects.
+        /// </summary>
+        /// <param name="type">The service type.</param>
+        /// <param name="instance">The service instance.</param>
+        public AutoFaker Use(Type type, object instance)
         {
-            configure?.Invoke(new AutoFakerConfiguration(_predefined));
+            if (!type.IsAssignableFrom(instance.GetType()))
+            {
+                throw new ArgumentException(
+                    $"The {nameof(instance)} is not of the {type} type.",
+                    nameof(instance));
+            }
+
+            _predefined.Add(type, instance);
+            return this;
         }
+
+        /// <summary>
+        /// Provide a predefined instance of a service to inject later to created objects.
+        /// </summary>
+        /// <typeparam name="T">The service type.</typeparam>
+        /// <param name="instance">The service instance.</param>
+        public AutoFaker Use<T>(T instance) where T : class => Use(typeof(T), instance);
 
         /// <summary>
         /// Creates the instance of the <paramref name="type"/> type.

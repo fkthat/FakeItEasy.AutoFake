@@ -32,9 +32,9 @@ A.CallTo(() => accountData.SetValue(111)).MustHaveHappened();
 // the predefined instance of the injectable service
 var accountData = new AccountData(42);
 
-var faker = new AutoFaker(configure =>
+var faker = new AutoFaker()
     // Use<> configures faker to use an instance
-    configure.Use<IAccountData>(accountData));
+    .Use<IAccountData>(accountData));
 
 // CreateInstance<> creates an instance of the system under test
 var accountService = faker.CreateInstance<AccountService>();
