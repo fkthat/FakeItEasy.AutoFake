@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-
-namespace FakeItEasy.AutoFake
+namespace FakeItEasy.AutoFake.Parameters
 {
     /// <summary>
     /// <see cref="IParameter"/> implemanrtation that matches by name.

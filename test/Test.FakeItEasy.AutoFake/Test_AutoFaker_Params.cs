@@ -1,3 +1,4 @@
+using FakeItEasy.AutoFake.Parameters;
 using FluentAssertions;
 using Xunit;
 

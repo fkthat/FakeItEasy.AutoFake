@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FakeItEasy;
+using FakeItEasy.AutoFake.Parameters;
 using FluentAssertions;
 using Xunit;
 
