@@ -62,12 +62,6 @@ namespace FakeItEasy.AutoFake
         /// <returns>The service instance.</returns>
         public object Get(Type type)
         {
-            if (_predefined.ContainsKey(type))
-            {
-                throw new ArgumentException($"{type} is configured as predefined dependency.",
-                    nameof(type));
-            }
-
             if (!_container.TryGetValue(type, out object value))
             {
                 value = Sdk.Create.Fake(type);
