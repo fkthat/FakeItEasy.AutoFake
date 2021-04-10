@@ -39,31 +39,6 @@ namespace FakeItEasy.AutoFake
         }
 
         [Fact]
-        public void Get_ShouldCreateAndReturnFake()
-        {
-            var sut = new AutoFaker();
-            var result = sut.Get(typeof(IAutoFaked));
-            result.Should().BeAssignableTo<IAutoFaked>();
-        }
-
-        [Fact]
-        public void Get_ShouldReturnCachedFake()
-        {
-            var sut = new AutoFaker();
-            var result1 = sut.Get(typeof(IAutoFaked));
-            var result2 = sut.Get(typeof(IAutoFaked));
-            result2.Should().BeSameAs(result1);
-        }
-
-        [Fact]
-        public void Get_ShouldThrowWithPredefined()
-        {
-            var predefined = A.Fake<IPredefined>();
-            var sut = new AutoFaker(config => config.Use(predefined));
-            sut.Invoking(s => s.Get(typeof(IPredefined))).Should().Throw<ArgumentException>();
-        }
-
-        [Fact]
         public void Fake_WithNonFakeableType_ShouldThrowFakeCreationException()
         {
             FluentActions.Invoking(() => Sdk.Create.Fake(typeof(int)))

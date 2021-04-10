@@ -77,6 +77,15 @@ namespace FakeItEasy.AutoFake
             return value;
         }
 
+        /// <summary>
+        /// Gets the service that will be provided by the AutoFake container. If the service of the
+        /// <typeparamref name="T"/> type is provided by <see cref="IAutoMockerConfiguration.Use"/>
+        /// it will return the instance provided. If a fake service of the <typeparamref name="T"/>
+        /// wasn't created yet it will create and return a new fake.
+        /// </summary>
+        /// <returns>The service instance.</returns>
+        public T Get<T>() where T : class => (T)Get(typeof(T));
+
         private object?[] Resolve(ParameterInfo[] pis, IParameter[] parameters) =>
             pis.Select(p => Resolve(p, parameters)).ToArray();
 
