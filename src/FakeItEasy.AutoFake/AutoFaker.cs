@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using FakeItEasy.AutoFake.Parameters;
 using FakeItEasy.Core;
 
 namespace FakeItEasy.AutoFake
 {
-    public class AutoFaker : IAutoFaker
+    public class AutoFaker
     {
         private readonly IDictionary<Type, object> _container = new Dictionary<Type, object>();
         private readonly IDictionary<Type, object> _predefined = new Dictionary<Type, object>();
@@ -70,6 +71,9 @@ namespace FakeItEasy.AutoFake
             throw new InvalidOperationException(
                 $"No suitable constructor to create an instance of {type}");
         }
+
+        public T CreateInstance<T>(params IParameter[] parameters) =>
+            (T)CreateInstance(typeof(T), parameters);
 
         /// <summary>
         /// Gets the service that will be provided by the AutoFake container. If a fake service of
