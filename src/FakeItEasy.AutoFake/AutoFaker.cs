@@ -7,6 +7,9 @@ using FakeItEasy.Core;
 
 namespace FakeItEasy.AutoFake
 {
+    /// <summary>
+    /// An auto-mocking IoC container that generates fake objects using FakeItEasy.
+    /// </summary>
     public class AutoFaker
     {
         private readonly IDictionary<Type, object> _container = new Dictionary<Type, object>();
@@ -41,6 +44,9 @@ namespace FakeItEasy.AutoFake
         /// Creates the instance of the <paramref name="type"/> type.
         /// </summary>
         /// <param name="type">The type of an instance to create.</param>
+        /// <param name="parameters">
+        /// The parameters to pass to the <paramref name="type"/> constructor.
+        /// </param>
         /// <returns>The created instance.</returns>
         public object CreateInstance(Type type, params IParameter[] parameters)
         {
@@ -72,6 +78,14 @@ namespace FakeItEasy.AutoFake
                 $"No suitable constructor to create an instance of {type}");
         }
 
+        /// <summary>
+        /// Creates the instance of the <typeparamref name="T"/> type.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters to pass to the <typeparamref name="T"/> constructor.
+        /// </param>
+        /// <returns>The created instance.</returns>
+
         public T CreateInstance<T>(params IParameter[] parameters) =>
             (T)CreateInstance(typeof(T), parameters);
 
@@ -93,10 +107,8 @@ namespace FakeItEasy.AutoFake
         }
 
         /// <summary>
-        /// Gets the service that will be provided by the AutoFake container. If the service of the
-        /// <typeparamref name="T"/> type is provided by <see cref="IAutoMockerConfiguration.Use"/>
-        /// it will return the instance provided. If a fake service of the <typeparamref name="T"/>
-        /// wasn't created yet it will create and return a new fake.
+        /// Gets the service that will be provided by the AutoFake container. If a fake service of
+        /// the <typeparamref name="T"/> wasn't created yet it will create and return a new fake.
         /// </summary>
         /// <returns>The service instance.</returns>
         public T Get<T>() where T : class => (T)Get(typeof(T));
