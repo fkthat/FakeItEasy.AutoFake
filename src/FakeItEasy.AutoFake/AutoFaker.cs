@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using FakeItEasy.AutoFake.Internals;
 using FakeItEasy.AutoFake.Parameters;
 using FakeItEasy.Core;
 
