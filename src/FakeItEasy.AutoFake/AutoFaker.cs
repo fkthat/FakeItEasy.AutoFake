@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using FakeItEasy.AutoFake.Internals;
 using FakeItEasy.AutoFake.Parameters;
 using FakeItEasy.Core;
 
@@ -12,8 +13,8 @@ namespace FakeItEasy.AutoFake
     /// </summary>
     public class AutoFaker
     {
+        private readonly Internals.Configuration _configuration = new();
         private readonly IDictionary<Type, object> _container = new Dictionary<Type, object>();
-        private readonly IDictionary<Type, object> _predefined = new Dictionary<Type, object>();
 
         /// <summary>
         /// Provide a predefined instance of a service to inject later to created objects.
@@ -29,7 +30,7 @@ namespace FakeItEasy.AutoFake
                     nameof(instance));
             }
 
-            _predefined.Add(type, instance);
+            _configuration.PredefinedInstances.Add(type, instance);
             return this;
         }
 
@@ -125,9 +126,9 @@ namespace FakeItEasy.AutoFake
                 return p.Resolve(pi);
             }
 
-            if (_predefined.ContainsKey(pi.ParameterType))
+            if (_configuration.PredefinedInstances.TryGetValue(pi.ParameterType, out var value))
             {
-                return _predefined[pi.ParameterType];
+                return value;
             }
 
             return Get(pi.ParameterType);
