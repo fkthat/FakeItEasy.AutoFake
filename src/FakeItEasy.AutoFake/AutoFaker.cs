@@ -12,7 +12,7 @@ namespace FakeItEasy.AutoFake
     /// </summary>
     public class AutoFaker
     {
-        private readonly Internals.Configuration _configuration = new();
+        private readonly Configuration _configuration = new();
         private readonly IDictionary<Type, object> _container = new Dictionary<Type, object>();
 
         /// <summary>
