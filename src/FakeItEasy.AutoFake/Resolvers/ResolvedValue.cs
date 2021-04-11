@@ -1,6 +1,20 @@
 namespace FakeItEasy.AutoFake.Resolvers
 {
-    internal abstract record ResolvedValue();
-    internal sealed record ResolvedSuccessValue(object? Value) : ResolvedValue;
-    internal sealed record ResolvedFailedValue() : ResolvedValue;
+    internal abstract class ResolvedValue
+    {
+    }
+
+    internal sealed class ResolvedSuccessValue : ResolvedValue
+    {
+        public ResolvedSuccessValue(object? value)
+        {
+            Value = value;
+        }
+
+        public object? Value { get; }
+    }
+
+    internal sealed class ResolvedFailedValue : ResolvedValue
+    {
+    }
 }
