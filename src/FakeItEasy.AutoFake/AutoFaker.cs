@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using FakeItEasy.AutoFake.Fakes;
 using FakeItEasy.AutoFake.Parameters;
 using FakeItEasy.Core;
 
@@ -12,9 +13,21 @@ namespace FakeItEasy.AutoFake
     /// </summary>
     public class AutoFaker
     {
-        private readonly Configuration _configuration = new();
+        private readonly Configuration _configuration;
+        private readonly FakeContainer _fakeContainer;
+        private readonly FakeFactory _fakeFactory;
 
         private readonly IDictionary<Type, object> _container = new Dictionary<Type, object>();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AutoFaker"/> class.
+        /// </summary>
+        public AutoFaker()
+        {
+            _configuration = new();
+            _fakeFactory = new();
+            _fakeContainer = new(_fakeFactory);
+        }
 
         /// <summary>
         /// Provide a predefined instance of a service to inject later to created objects.
@@ -64,22 +77,13 @@ namespace FakeItEasy.AutoFake
         /// </summary>
         /// <param name="type">The type of a service.</param>
         /// <returns>The service instance.</returns>
-        public object Get(Type type)
-        {
-            if (!_container.TryGetValue(type, out var value))
-            {
-                value = Sdk.Create.Fake(type);
-                _container.Add(type, value);
-            }
-
-            return value;
-        }
+        public object? Get(Type type) => _fakeContainer.Get(type);
 
         /// <summary>
         /// Gets the service that will be provided by the AutoFake container. If a fake service of
         /// the <typeparamref name="T"/> wasn't created yet it will create and return a new fake.
         /// </summary>
         /// <returns>The service instance.</returns>
-        public T Get<T>() where T : class => (T)Get(typeof(T));
+        public T? Get<T>() where T : class => (T?)Get(typeof(T));
     }
 }
