@@ -33,7 +33,7 @@ namespace FakeItEasy.AutoFake.Samples
         public void Deposite_ShouldAddAccountValue_2()
         {
             var accountData = new AccountData(42);
-            var faker = new AutoFaker().Use<IAccountData>(accountData);
+            var faker = new AutoFaker(c => c.Use<IAccountData>(accountData));
 
             var accountService = faker.CreateInstance<FeeAccountService>(
                 new NamedParameter("depositeFee", 10));
@@ -61,7 +61,7 @@ namespace FakeItEasy.AutoFake.Samples
         public void Deposite_ShouldAddAccountValue_4()
         {
             var accountData = new AccountData(42);
-            var faker = new AutoFaker().Use<IAccountData>(accountData);
+            var faker = new AutoFaker(c => c.Use<IAccountData>(accountData));
 
             var accountService = faker.CreateInstance<FeeAccountService>(
                 new TypedParameter<int>(10));
