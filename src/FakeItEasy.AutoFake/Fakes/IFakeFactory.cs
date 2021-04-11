@@ -4,6 +4,6 @@ namespace FakeItEasy.AutoFake.Fakes
 {
     internal interface IFakeFactory
     {
-        object? Get(Type type);
+        object Get(Type type);
     }
 }

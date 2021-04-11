@@ -13,17 +13,11 @@ namespace FakeItEasy.AutoFake.Fakes
             _fakeFactory = fakeFactory;
         }
 
-        public object? Get(Type type)
+        public object Get(Type type)
         {
-            if (_container.TryGetValue(type, out var value))
+            if (!_container.TryGetValue(type, out var value))
             {
-                return value;
-            }
-
-            value = _fakeFactory.Get(type);
-
-            if (value != null)
-            {
+                value = _fakeFactory.Get(type);
                 _container.Add(type, value);
             }
 

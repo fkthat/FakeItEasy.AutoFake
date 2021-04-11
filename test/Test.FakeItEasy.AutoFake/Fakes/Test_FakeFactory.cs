@@ -16,11 +16,12 @@ namespace FakeItEasy.AutoFake.Fakes
         }
 
         [Fact]
-        public void Get_ShouldReturnNullOnFailure()
+        public void Get_ShouldThrowOnFailure()
         {
             FakeFactory sut = new();
-            var result = sut.Get(typeof(int));
-            result.Should().BeNull();
+
+            sut.Invoking(s => s.Get(typeof(int))).Should()
+                .Throw<Core.FakeCreationException>();
         }
     }
 }
