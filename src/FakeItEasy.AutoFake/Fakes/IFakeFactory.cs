@@ -1,6 +1,6 @@
 using System;
 
-namespace FakeItEasy.AutoFake.Internals
+namespace FakeItEasy.AutoFake.Fakes
 {
     internal interface IFakeFactory
     {
