@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace FakeItEasy.AutoFake.Internals
+namespace FakeItEasy.AutoFake.Fakes
 {
     internal class FakeContainer : IFakeFactory
     {

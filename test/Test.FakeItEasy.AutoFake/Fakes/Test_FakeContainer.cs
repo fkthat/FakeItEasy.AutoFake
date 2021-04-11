@@ -1,7 +1,7 @@
 using FluentAssertions;
 using Xunit;
 
-namespace FakeItEasy.AutoFake.Internals
+namespace FakeItEasy.AutoFake.Fakes
 {
     public class Test_FakeContainer
     {

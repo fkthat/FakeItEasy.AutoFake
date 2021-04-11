@@ -1,7 +1,7 @@
 using System;
 using FakeItEasy.Core;
 
-namespace FakeItEasy.AutoFake.Internals
+namespace FakeItEasy.AutoFake.Fakes
 {
     internal class FakeFactory : IFakeFactory
     {
