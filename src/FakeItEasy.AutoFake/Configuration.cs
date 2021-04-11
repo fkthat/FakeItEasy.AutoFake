@@ -5,7 +5,20 @@ namespace FakeItEasy.AutoFake
 {
     internal class Configuration
     {
-        public IDictionary<Type, object> PredefinedInstances { get; init; } =
-            new Dictionary<Type, object>();
+        private readonly Dictionary<Type, object?> _predefinedInstances = new();
+
+        public IReadOnlyDictionary<Type, object?> PredefinedInstances => _predefinedInstances;
+
+        public void Use(Type type, object? instance)
+        {
+            if (instance != null && !type.IsAssignableFrom(instance.GetType()))
+            {
+                throw new ArgumentException(
+                    $"The {nameof(instance)} is not of the {type} type.",
+                    nameof(instance));
+            }
+
+            _predefinedInstances.Add(type, instance);
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace FakeItEasy.AutoFake
     public class AutoFaker
     {
         private readonly Configuration _configuration = new();
+
         private readonly IDictionary<Type, object> _container = new Dictionary<Type, object>();
 
         /// <summary>
@@ -20,16 +21,9 @@ namespace FakeItEasy.AutoFake
         /// </summary>
         /// <param name="type">The service type.</param>
         /// <param name="instance">The service instance.</param>
-        public AutoFaker Use(Type type, object instance)
+        public AutoFaker Use(Type type, object? instance)
         {
-            if (!type.IsAssignableFrom(instance.GetType()))
-            {
-                throw new ArgumentException(
-                    $"The {nameof(instance)} is not of the {type} type.",
-                    nameof(instance));
-            }
-
-            _configuration.PredefinedInstances.Add(type, instance);
+            _configuration.Use(type, instance);
             return this;
         }
 
@@ -50,32 +44,7 @@ namespace FakeItEasy.AutoFake
         /// <returns>The created instance.</returns>
         public object CreateInstance(Type type, params IParameter[] parameters)
         {
-            object?[]? values = null;
-
-            foreach (var ctor in type.GetConstructors())
-            {
-                try
-                {
-                    var values2 = Resolve(ctor.GetParameters(), parameters);
-
-                    if (values == null || values.Length < values2.Length)
-                    {
-                        values = values2;
-                    }
-                }
-                catch (FakeCreationException)
-                {
-                    continue;
-                }
-            }
-
-            if (values != null)
-            {
-                return Activator.CreateInstance(type, values);
-            }
-
-            throw new InvalidOperationException(
-                $"No suitable constructor to create an instance of {type}");
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -97,7 +66,7 @@ namespace FakeItEasy.AutoFake
         /// <returns>The service instance.</returns>
         public object Get(Type type)
         {
-            if (!_container.TryGetValue(type, out object value))
+            if (!_container.TryGetValue(type, out var value))
             {
                 value = Sdk.Create.Fake(type);
                 _container.Add(type, value);
@@ -112,25 +81,5 @@ namespace FakeItEasy.AutoFake
         /// </summary>
         /// <returns>The service instance.</returns>
         public T Get<T>() where T : class => (T)Get(typeof(T));
-
-        private object?[] Resolve(ParameterInfo[] pis, IParameter[] parameters) =>
-            pis.Select(p => Resolve(p, parameters)).ToArray();
-
-        private object? Resolve(ParameterInfo pi, IParameter[] parameters)
-        {
-            var p = parameters.FirstOrDefault(x => x.Match(pi));
-
-            if (p != null)
-            {
-                return p.Resolve(pi);
-            }
-
-            if (_configuration.PredefinedInstances.TryGetValue(pi.ParameterType, out var value))
-            {
-                return value;
-            }
-
-            return Get(pi.ParameterType);
-        }
     }
 }
