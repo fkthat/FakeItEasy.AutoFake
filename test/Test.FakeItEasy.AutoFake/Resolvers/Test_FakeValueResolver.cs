@@ -1,8 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.Reflection;
 using FakeItEasy.AutoFake.Fakes;
-using FakeItEasy.AutoFake.Parameters;
+using FakeItEasy.Core;
 using FluentAssertions;
 using Xunit;
 
@@ -29,7 +27,7 @@ namespace FakeItEasy.AutoFake.Resolvers
         public void Resolve_ShouldCallNext()
         {
             var fakeFactory = A.Fake<IFakeFactory>();
-            A.CallTo(() => fakeFactory.Get(typeof(IFoo))).Returns(null);
+            A.CallTo(() => fakeFactory.Get(typeof(IFoo))).Throws<FakeCreationException>();
             FakeValueResolver sut = new(fakeFactory, new FailedValueResolver());
             var pi = A.Fake<ParameterInfo>();
             A.CallTo(() => pi.ParameterType).Returns(typeof(IFoo));

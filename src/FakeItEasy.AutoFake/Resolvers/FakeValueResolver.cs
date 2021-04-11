@@ -1,7 +1,7 @@
-using System;
 using System.Reflection;
 using FakeItEasy.AutoFake.Fakes;
 using FakeItEasy.AutoFake.Parameters;
+using FakeItEasy.Core;
 
 namespace FakeItEasy.AutoFake.Resolvers
 {
@@ -14,11 +14,17 @@ namespace FakeItEasy.AutoFake.Resolvers
             _fakeFactory = fakeFactory;
         }
 
-        protected override ResolvedValue? TryResolve(ParameterInfo parameterInfo,
-            params IParameter[] parameters)
+        protected override ResolvedValue? TryResolve(
+            ParameterInfo parameterInfo, params IParameter[] parameters)
         {
-            var v = _fakeFactory.Get(parameterInfo.ParameterType);
-            return v != null ? new ResolvedSuccessValue(v) : null;
+            try
+            {
+                return new ResolvedSuccessValue(_fakeFactory.Get(parameterInfo.ParameterType));
+            }
+            catch (FakeCreationException)
+            {
+                return null;
+            }
         }
     }
 }
