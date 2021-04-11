@@ -5,7 +5,7 @@ using Xunit;
 
 namespace FakeItEasy.AutoFake
 {
-    public class Test_Configuration
+    public class Test_AutoFakerConfiguration
     {
         public interface IFoo { }
 
@@ -14,7 +14,7 @@ namespace FakeItEasy.AutoFake
         {
             var type = typeof(IFoo);
             Bar instance = new();
-            Configuration sut = new();
+            AutoFakerConfiguration sut = new();
             sut.Invoking(s => s.Use(type, instance))
                 .Should().Throw<ArgumentException>().Which.ParamName
                 .Should().Be("instance");
@@ -25,10 +25,11 @@ namespace FakeItEasy.AutoFake
         {
             var type = typeof(IFoo);
             var instance = new Foo();
-            Configuration sut = new();
-            sut.Use(type, instance);
+            AutoFakerConfiguration sut = new();
+            var r = sut.Use(type, instance);
             sut.PredefinedInstances.Should().Contain(
                 new KeyValuePair<Type, object?>(type, instance));
+            r.Should().Be(sut);
         }
 
         [Fact]
@@ -36,10 +37,11 @@ namespace FakeItEasy.AutoFake
         {
             var type = typeof(IFoo);
             Foo? instance = null;
-            Configuration sut = new();
-            sut.Use(type, instance);
+            AutoFakerConfiguration sut = new();
+            var r = sut.Use(type, instance);
             sut.PredefinedInstances.Should().Contain(
                 new KeyValuePair<Type, object?>(type, instance));
+            r.Should().Be(sut);
         }
 
         public class Foo : IFoo { }

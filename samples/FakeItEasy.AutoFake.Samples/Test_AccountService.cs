@@ -25,7 +25,7 @@ namespace FakeItEasy.AutoFake.Samples
         public void Deposite_ShouldAddAccountValue_2()
         {
             var accountData = new AccountData(42);
-            var faker = new AutoFaker().Use<IAccountData>(accountData);
+            var faker = new AutoFaker(c => c.Use<IAccountData>(accountData));
             var accountService = faker.CreateInstance<AccountService>();
             accountService.Deposite(69);
             accountData.GetValue().Should().Be(111);

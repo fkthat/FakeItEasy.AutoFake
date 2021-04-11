@@ -13,39 +13,20 @@ namespace FakeItEasy.AutoFake
     /// </summary>
     public class AutoFaker
     {
-        private readonly Configuration _configuration;
+        private readonly AutoFakerConfiguration _configuration;
         private readonly FakeContainer _fakeContainer;
         private readonly FakeFactory _fakeFactory;
-
-        private readonly IDictionary<Type, object> _container = new Dictionary<Type, object>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutoFaker"/> class.
         /// </summary>
-        public AutoFaker()
+        public AutoFaker(Action<IAutoFakerConfiguration>? configurationBuilder = null)
         {
             _configuration = new();
+            configurationBuilder?.Invoke(_configuration);
             _fakeFactory = new();
             _fakeContainer = new(_fakeFactory);
         }
-
-        /// <summary>
-        /// Provide a predefined instance of a service to inject later to created objects.
-        /// </summary>
-        /// <param name="type">The service type.</param>
-        /// <param name="instance">The service instance.</param>
-        public AutoFaker Use(Type type, object? instance)
-        {
-            _configuration.Use(type, instance);
-            return this;
-        }
-
-        /// <summary>
-        /// Provide a predefined instance of a service to inject later to created objects.
-        /// </summary>
-        /// <typeparam name="T">The service type.</typeparam>
-        /// <param name="instance">The service instance.</param>
-        public AutoFaker Use<T>(T instance) where T : class => Use(typeof(T), instance);
 
         /// <summary>
         /// Creates the instance of the <paramref name="type"/> type.

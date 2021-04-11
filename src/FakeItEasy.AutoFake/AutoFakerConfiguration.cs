@@ -4,13 +4,13 @@ using System.Reflection;
 
 namespace FakeItEasy.AutoFake
 {
-    internal class Configuration
+    internal class AutoFakerConfiguration : IAutoFakerConfiguration
     {
         private readonly Dictionary<Type, object?> _predefinedInstances = new();
 
         public IReadOnlyDictionary<Type, object?> PredefinedInstances => _predefinedInstances;
 
-        public void Use(Type type, object? instance)
+        public IAutoFakerConfiguration Use(Type type, object? instance)
         {
             if (instance != null && !type.IsAssignableFrom(instance.GetType()))
             {
@@ -20,6 +20,7 @@ namespace FakeItEasy.AutoFake
             }
 
             _predefinedInstances.Add(type, instance);
+            return this;
         }
     }
 }
