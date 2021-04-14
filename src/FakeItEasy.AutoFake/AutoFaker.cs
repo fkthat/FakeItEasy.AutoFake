@@ -9,19 +9,26 @@ namespace FakeItEasy.AutoFake
     /// </summary>
     public class AutoFaker : IAutoFaker
     {
-        private readonly AutoFakerConfiguration _configuration;
-        private readonly FakeContainer _fakeContainer;
-        private readonly FakeFactory _fakeFactory;
+        private readonly IFakeFactory _fakeFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutoFaker"/> class.
         /// </summary>
         public AutoFaker(Action<IAutoFakerConfiguration>? configurationBuilder = null)
         {
-            _configuration = new();
-            configurationBuilder?.Invoke(_configuration);
-            _fakeFactory = new();
-            _fakeContainer = new(_fakeFactory);
+            AutoFakerConfiguration configuration = new();
+            configurationBuilder?.Invoke(configuration);
+
+            _fakeFactory = new FakeContainer(new FakeFactory());
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AutoFaker"/> class. This constructor is
+        /// intended for testing.
+        /// </summary>
+        internal AutoFaker(IFakeFactory fakeFactory)
+        {
+            _fakeFactory = fakeFactory;
         }
 
         /// <summary>
