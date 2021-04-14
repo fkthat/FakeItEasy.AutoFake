@@ -1,0 +1,98 @@
+# Azure Pipelines CI
+
+trigger:
+- develop
+- master
+pr:
+- develop
+- master
+
+variables:
+  BuildConfiguration: Release
+  VersionSuffix: ''
+
+pool:
+  vmImage: ubuntu-20.04
+
+steps:
+
+- task: UseDotNet@2
+  displayName: Use SDK
+  inputs:
+    packageType: 'sdk'
+    useGlobalJson: true
+
+- task: DotNetCoreCLI@2
+  displayName: Restore
+  inputs:
+    command: 'restore'
+    arguments: -c $(BuildConfiguration)
+
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    command: 'build'
+    arguments: -c $(BuildConfiguration) --no-restore
+
+- task: DotNetCoreCLI@2
+  displayName: Test
+  inputs:
+    command: 'test'
+    publishTestResults: true
+    arguments: -c $(BuildConfiguration) --no-build
+
+- task: DotNetCoreCLI@2
+  displayName: Restore tools
+  inputs:
+    command: 'custom'
+    custom: 'tool'
+    arguments: restore
+
+- task: DotNetCoreCLI@2
+  displayName: Generate coverage report
+  inputs:
+    command: 'custom'
+    custom: 'tool'
+    arguments: >-
+      run reportgenerator -reports:test/**/coverage.cobertura.xml
+      -targetdir:Coverage -reporttypes:Cobertura
+
+- task: PublishCodeCoverageResults@1
+  displayName: Publish coverage report
+  inputs:
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: 'Coverage/Cobertura.xml'
+
+- task: Bash@3
+  displayName: Turn pack on
+  condition: eq(variables['Build.Reason'], 'IndividualCI')
+  inputs:
+    targetType: 'inline'
+    script: echo "##vso[task.setvariable variable=Pack]Yes"
+
+- task: Bash@3
+  displayName: Set version suffix
+  condition: and(eq(variables.Pack, 'Yes'), ne(variables['Build.SourceBranchName'], 'master'))
+  inputs:
+    targetType: 'inline'
+    script: echo "##vso[task.setvariable variable=VersionSuffix]CI-$(Build.BuildNumber)"
+
+- task: DotNetCoreCLI@2
+  displayName: Pack
+  condition: eq(variables.Pack, 'Yes')
+  inputs:
+    command: 'custom'
+    projects: 'src/**/*.csproj'
+    custom: 'pack'
+    arguments: >-
+      -c $(BuildConfiguration) -o $(Build.ArtifactStagingDirectory)
+      -p:VersionSuffix=$(VersionSuffix) --no-build
+
+- task: NuGetCommand@2
+  displayName: Push to MyGet
+  condition: eq(variables.Pack, 'Yes')
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: 'MyGet'
