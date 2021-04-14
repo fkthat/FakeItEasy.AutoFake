@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using FakeItEasy.AutoFake.Parameters;
 
 namespace FakeItEasy.AutoFake
@@ -27,6 +24,6 @@ namespace FakeItEasy.AutoFake
         /// </summary>
         /// <param name="type">The type of a service.</param>
         /// <returns>The service instance or null if failed.</returns>
-        object? Get(Type type);
+        object Get(Type type);
     }
 }

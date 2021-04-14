@@ -37,7 +37,7 @@ namespace FakeItEasy.AutoFake
         /// <typeparam name="T"></typeparam>
         /// <param name="autoFaker"><c cref="IAutoFaker"/> instance.</param>
         /// <returns>The service instance.</returns>
-        public static T? Get<T>(this IAutoFaker autoFaker) where T : class =>
-            (T?)autoFaker.Get(typeof(T));
+        public static T Get<T>(this IAutoFaker autoFaker) where T : class =>
+            (T)autoFaker.Get(typeof(T));
     }
 }
