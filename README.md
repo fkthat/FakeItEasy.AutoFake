@@ -1,8 +1,8 @@
 # FakeItEasy.AutoFake
 
-[![Build Status](https://dev.azure.com/FkThat/AutoFake/_apis/build/status/CI?branchName=develop)](https://dev.azure.com/FkThat/AutoFake/_build/latest?definitionId=30&branchName=develop)
-[![Azure DevOps tests (develop)](https://img.shields.io/azure-devops/tests/FkThat/AutoFake/30/develop)](https://dev.azure.com/FkThat/AutoFake/_build/latest?definitionId=30&branchName=develop)
-[![Azure DevOps coverage (develop)](https://img.shields.io/azure-devops/coverage/FkThat/AutoFake/30/develop)](https://dev.azure.com/FkThat/AutoFake/_build/latest?definitionId=30&branchName=develop)
+[![Build Status](https://dev.azure.com/FkThat/CI/_apis/build/status/AutoFake?branchName=develop)](https://dev.azure.com/FkThat/CI/_build/latest?definitionId=40&branchName=develop)
+[![Azure DevOps tests (develop)](https://img.shields.io/azure-devops/tests/FkThat/CI/40/develop)](https://dev.azure.com/FkThat/CI/_build/latest?definitionId=40&branchName=develop)
+[![Azure DevOps coverage (develop)](https://img.shields.io/azure-devops/coverage/FkThat/CI/40/develop)](https://dev.azure.com/FkThat/CI/_build/latest?definitionId=40&branchName=develop)
 [![MyGet (with prereleases)](https://img.shields.io/myget/fkthat/vpre/FakeItEasy.AutoFake?label=MyGet)](https://www.myget.org/feed/fkthat/package/nuget/FakeItEasy.AutoFake)
 
 An auto-mocking container that generates mocks using FakeItEasy.
