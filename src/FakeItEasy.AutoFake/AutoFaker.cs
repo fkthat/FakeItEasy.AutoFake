@@ -1,5 +1,4 @@
 using System;
-using FakeItEasy.AutoFake.Fakes;
 using FakeItEasy.AutoFake.Parameters;
 
 namespace FakeItEasy.AutoFake
@@ -19,7 +18,7 @@ namespace FakeItEasy.AutoFake
             AutoFakerConfiguration configuration = new();
             configurationBuilder?.Invoke(configuration);
 
-            _fakeFactory = new FakeContainer(new FakeFactory());
+            _fakeFactory = new FakeFactoryCachingDecorator(new FakeFactory());
         }
 
         /// <summary>
@@ -50,6 +49,6 @@ namespace FakeItEasy.AutoFake
         /// </summary>
         /// <param name="type">The type of a service.</param>
         /// <returns>The service instance.</returns>
-        public object Get(Type type) => _fakeFactory.Get(type);
+        public object Get(Type type) => _fakeFactory.CreateFake(type);
     }
 }

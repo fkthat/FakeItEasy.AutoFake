@@ -1,7 +1,7 @@
 using FluentAssertions;
 using Xunit;
 
-namespace FakeItEasy.AutoFake.Fakes
+namespace FakeItEasy.AutoFake
 {
     public class Test_FakeFactory
     {
@@ -11,7 +11,7 @@ namespace FakeItEasy.AutoFake.Fakes
         public void Get_ShouldReturnNewFakeOnSuccess()
         {
             FakeFactory sut = new();
-            var result = sut.Get(typeof(IFoo));
+            var result = sut.CreateFake(typeof(IFoo));
             result.Should().BeAssignableTo<IFoo>();
         }
 
@@ -20,7 +20,7 @@ namespace FakeItEasy.AutoFake.Fakes
         {
             FakeFactory sut = new();
 
-            sut.Invoking(s => s.Get(typeof(int))).Should()
+            sut.Invoking(s => s.CreateFake(typeof(int))).Should()
                 .Throw<Core.FakeCreationException>();
         }
     }
