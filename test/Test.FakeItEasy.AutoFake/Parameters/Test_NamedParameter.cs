@@ -18,7 +18,7 @@ namespace FakeItEasy.AutoFake.Parameters
         {
             var pi = GetType().GetMethod(nameof(Foo))!.GetParameters()[0];
             var sut = new NamedParameter("bar", 42);
-            sut.Resolve(pi).Should().Be(42);
+            sut.GetValue(pi).Should().Be(42);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage",

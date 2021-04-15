@@ -23,7 +23,7 @@ namespace FakeItEasy.AutoFake.Parameters
             var pi = GetType().GetMethod("Foo")!.GetParameters()[0];
             var match = A.Dummy<Func<ParameterInfo, bool>>();
             var sut = new ConstantValueParameter(match, 42);
-            sut.Resolve(pi).Should().Be(42);
+            sut.GetValue(pi).Should().Be(42);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage",

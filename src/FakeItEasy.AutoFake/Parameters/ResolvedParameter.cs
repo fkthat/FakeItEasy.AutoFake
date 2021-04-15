@@ -9,37 +9,32 @@ namespace FakeItEasy.AutoFake.Parameters
     public class ResolvedParameter : IParameter
     {
         private readonly Func<ParameterInfo, bool> _match;
-        private readonly Func<ParameterInfo, object?> _resolve;
+        private readonly Func<ParameterInfo, object?> _getValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ResolvedParameter"/> class.
         /// </summary>
         /// <param name="match">The match predicate.</param>
-        /// <param name="resolve">The resolve function.</param>
+        /// <param name="getValue">The value resolve function.</param>
         public ResolvedParameter(
             Func<ParameterInfo, bool> match,
-            Func<ParameterInfo, object?> resolve)
+            Func<ParameterInfo, object?> getValue)
         {
             _match = match;
-            _resolve = resolve;
+            _getValue = getValue;
         }
 
         /// <summary>
-        /// Matches the specified parameter information.
+        /// Matches the specified parameter information by the predicate passed previously to the
+        /// constructor.
         /// </summary>
         /// <param name="parameterInfo">The parameter information.</param>
-        /// <returns>
-        /// True if the value of specified parameter can be resolved, false otherwise.
-        /// </returns>
-        /// <exception cref="NotImplementedException"></exception>
         public bool Match(ParameterInfo parameterInfo) => _match(parameterInfo);
 
         /// <summary>
-        /// Resolves value for the specified parameter.
+        /// Gets the value for the specified parameter.
         /// </summary>
         /// <param name="parameterInfo">The parameter information.</param>
-        /// <returns>Resolved value. <br/></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public object? Resolve(ParameterInfo parameterInfo) => _resolve(parameterInfo);
+        public object? GetValue(ParameterInfo parameterInfo) => _getValue(parameterInfo);
     }
 }

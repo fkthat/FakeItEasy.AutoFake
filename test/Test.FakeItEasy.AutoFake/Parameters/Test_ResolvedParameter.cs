@@ -26,7 +26,7 @@ namespace FakeItEasy.AutoFake.Parameters
             var resolve = A.Fake<Func<ParameterInfo, object?>>();
             A.CallTo(() => resolve(pi)).Returns(42);
             var sut = new ResolvedParameter(match, resolve);
-            sut.Resolve(pi).Should().Be(42);
+            sut.GetValue(pi).Should().Be(42);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage",

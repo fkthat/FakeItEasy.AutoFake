@@ -3,24 +3,21 @@ using System.Reflection;
 namespace FakeItEasy.AutoFake.Parameters
 {
     /// <summary>
-    /// Parameter value resolver.
+    /// A parameter to pass additionaly to the <c cref="AutoFaker.CreateInstance"/>.
     /// </summary>
     public interface IParameter
     {
         /// <summary>
-        /// Matches the specified parameter information.
+        /// Determines if the the value of the specified parameter can be provided by this instance
+        /// of <c cref="IParameter"/>.
         /// </summary>
         /// <param name="parameterInfo">The parameter information.</param>
-        /// <returns>
-        /// True if the value of specified parameter can be resolved, false otherwise.
-        /// </returns>
         bool Match(ParameterInfo parameterInfo);
 
         /// <summary>
-        /// Resolves value for the specified parameter.
+        /// Gets the value for the specified parameter.
         /// </summary>
         /// <param name="parameterInfo">The parameter information.</param>
-        /// <returns>Resolved value. <br/></returns>
-        object? Resolve(ParameterInfo parameterInfo);
+        object? GetValue(ParameterInfo parameterInfo);
     }
 }

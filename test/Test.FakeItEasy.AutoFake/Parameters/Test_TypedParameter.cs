@@ -20,9 +20,9 @@ namespace FakeItEasy.AutoFake.Parameters
         {
             var pi = GetType().GetMethod("Foo")!.GetParameters()[0];
             var sut = new TypedParameter(typeof(int), 42);
-            sut.Resolve(pi).Should().Be(42);
+            sut.GetValue(pi).Should().Be(42);
             sut = new TypedParameter<int>(42);
-            sut.Resolve(pi).Should().Be(42);
+            sut.GetValue(pi).Should().Be(42);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage",

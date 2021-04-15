@@ -3,7 +3,7 @@ using System;
 namespace FakeItEasy.AutoFake.Parameters
 {
     /// <summary>
-    /// <see cref="IParameter"/> implemanrtation that matches by type.
+    /// <see cref="IParameter"/> implementation that matches by type.
     /// </summary>
     public class TypedParameter : ConstantValueParameter
     {
@@ -19,7 +19,7 @@ namespace FakeItEasy.AutoFake.Parameters
     }
 
     /// <summary>
-    /// <see cref="IParameter"/> implemanrtation that matches by type.
+    /// <see cref="IParameter"/> implementation that matches by type.
     /// </summary>
     /// <typeparam name="T">Parameter type to match.</typeparam>
     public class TypedParameter<T> : TypedParameter
