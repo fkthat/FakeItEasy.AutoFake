@@ -50,6 +50,6 @@ namespace FakeItEasy.AutoFake
         /// </summary>
         /// <param name="type">The type of a service.</param>
         /// <returns>The service instance.</returns>
-        public object Get(Type type) => _fakeContainer.Get(type);
+        public object Get(Type type) => _fakeFactory.Get(type);
     }
 }

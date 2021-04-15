@@ -8,17 +8,6 @@ namespace FakeItEasy.AutoFake
         public interface IFoo { }
 
         [Fact]
-        public void Use_ShouldCallConfiguration()
-        {
-            var foo = A.Fake<IFoo>();
-            var configuration = A.Fake<IAutoFakerConfiguration>();
-            A.CallTo(() => configuration.Use(typeof(IFoo), foo)).Returns(configuration);
-            var r = configuration.Use(foo);
-            A.CallTo(() => configuration.Use(typeof(IFoo), foo)).MustHaveHappened();
-            r.Should().Be(configuration);
-        }
-
-        [Fact]
         public void CreateInstance_ShouldCallAutoFaker()
         {
             var foo = new Foo();

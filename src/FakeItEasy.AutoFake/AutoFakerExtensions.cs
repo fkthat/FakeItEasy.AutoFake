@@ -8,16 +8,6 @@ namespace FakeItEasy.AutoFake
     public static class AutoFakerExtensions
     {
         /// <summary>
-        /// Provide a predefined instance of a service to inject later to created objects.
-        /// </summary>
-        /// <typeparam name="T">The service type.</typeparam>
-        /// <param name="configuration"><c cref="IAutoFakerConfiguration"/> instance.</param>
-        /// <param name="instance">The service instance.</param>
-        public static IAutoFakerConfiguration Use<T>(
-            this IAutoFakerConfiguration configuration, T instance) where T : class =>
-            configuration.Use(typeof(T), instance);
-
-        /// <summary>
         /// Creates the instance of the <typeparamref name="T"/> type.
         /// </summary>
         /// <param name="autoFaker"><c cref="IAutoFaker"/> instance.</param>
