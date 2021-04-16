@@ -5,7 +5,7 @@ namespace FakeItEasy.AutoFake.Resolvers
     /// <summary>
     /// A value resolver that always fails. Intended to be the last resolver in the chain.
     /// </summary>
-    public class FailedParameterResolver : IParameterResolver
+    internal class FailedParameterResolver : IParameterResolver
     {
         /// <summary>
         /// Resolves a parameter value by the specified parameter information.

@@ -8,7 +8,7 @@ namespace FakeItEasy.AutoFake.Resolvers
     /// <summary>
     /// Resolves value by matching <c cref="IParameter"/> array.
     /// </summary>
-    public class MatchParameterResolver : ChainParameterResolver
+    internal class MatchParameterResolver : ChainParameterResolver
     {
         private readonly IEnumerable<IParameter> _parameters;
 

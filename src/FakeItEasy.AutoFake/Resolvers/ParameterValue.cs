@@ -3,14 +3,14 @@ namespace FakeItEasy.AutoFake.Resolvers
     /// <summary>
     /// A result of the value resolution.
     /// </summary>
-    public abstract class ParameterValue
+    internal abstract class ParameterValue
     {
     }
 
     /// <summary>
     /// A result of a succesfull value resolution.
     /// </summary>
-    public class SuccessParameterValue : ParameterValue
+    internal class SuccessParameterValue : ParameterValue
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SuccessParameterValue"/> class.
@@ -30,7 +30,7 @@ namespace FakeItEasy.AutoFake.Resolvers
     /// <summary>
     /// An unsuccessfull value resolution result.
     /// </summary>
-    public class FailedParameterValue : ParameterValue
+    internal class FailedParameterValue : ParameterValue
     {
     }
 }

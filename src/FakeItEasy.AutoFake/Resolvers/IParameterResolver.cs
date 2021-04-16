@@ -5,7 +5,7 @@ namespace FakeItEasy.AutoFake.Resolvers
     /// <summary>
     /// A parameter value resolver.
     /// </summary>
-    public interface IParameterResolver
+    internal interface IParameterResolver
     {
         /// <summary>
         /// Resolves a parameter value by the specified parameter information.

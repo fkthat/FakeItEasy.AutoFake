@@ -6,7 +6,7 @@ namespace FakeItEasy.AutoFake.Resolvers
     /// A value resolver with fallback. It resolves the value if can, otherwise call the next
     /// resolver in the chain.
     /// </summary>
-    public abstract class ChainParameterResolver : IParameterResolver
+    internal abstract class ChainParameterResolver : IParameterResolver
     {
         private readonly IParameterResolver _next;
 
