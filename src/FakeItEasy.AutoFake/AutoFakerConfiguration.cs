@@ -1,16 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace FakeItEasy.AutoFake
 {
-    internal class AutoFakerConfiguration : IAutoFakerConfiguration
+    internal class AutoFakerConfiguration : IAutoFakerConfiguration, IAutoFakerConfigurationBuilder
     {
         private readonly Dictionary<Type, object?> _predefinedInstances = new();
 
         public IReadOnlyDictionary<Type, object?> PredefinedInstances => _predefinedInstances;
 
-        public IAutoFakerConfiguration Use(Type type, object? instance)
+        public IAutoFakerConfigurationBuilder Use(Type type, object? instance)
         {
             if (instance != null && !type.IsAssignableFrom(instance.GetType()))
             {

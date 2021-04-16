@@ -13,11 +13,10 @@ namespace FakeItEasy.AutoFake
         /// <summary>
         /// Initializes a new instance of the <see cref="AutoFaker"/> class.
         /// </summary>
-        public AutoFaker(Action<IAutoFakerConfiguration>? configurationBuilder = null)
+        public AutoFaker(Action<IAutoFakerConfigurationBuilder>? configure = null)
         {
             AutoFakerConfiguration configuration = new();
-            configurationBuilder?.Invoke(configuration);
-
+            configure?.Invoke(configuration);
             _fakeFactory = new FakeFactoryCachingDecorator(new FakeFactory());
         }
 
