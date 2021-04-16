@@ -12,7 +12,7 @@ namespace FakeItEasy.AutoFake.Resolvers
 
         protected override ResolvedValue? TryResolve(ParameterInfo parameterInfo,
             params IParameter[] parameters) => parameters.Where(p => p.Match(parameterInfo))
-            .Select(p => p.Resolve(parameterInfo)).Select(v => new ResolvedSuccessValue(v))
+            .Select(p => p.GetValue(parameterInfo)).Select(v => new SuccessResolvedValue(v))
             .FirstOrDefault();
     }
 }

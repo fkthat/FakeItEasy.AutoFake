@@ -19,7 +19,7 @@ namespace FakeItEasy.AutoFake.Resolvers
             var pi = A.Fake<ParameterInfo>();
             A.CallTo(() => pi.ParameterType).Returns(typeof(IFoo));
             var r = sut.Resolve(pi);
-            r.Should().BeOfType<ResolvedSuccessValue>().Which.Value.Should().Be("Bar");
+            r.Should().BeOfType<SuccessResolvedValue>().Which.Value.Should().Be("Bar");
         }
 
         [Fact]
@@ -30,7 +30,7 @@ namespace FakeItEasy.AutoFake.Resolvers
             var pi = A.Fake<ParameterInfo>();
             A.CallTo(() => pi.ParameterType).Returns(typeof(IFoo));
             var r = sut.Resolve(pi);
-            r.Should().BeOfType<ResolvedFailedValue>();
+            r.Should().BeOfType<FailedResolvedValue>();
         }
     }
 }

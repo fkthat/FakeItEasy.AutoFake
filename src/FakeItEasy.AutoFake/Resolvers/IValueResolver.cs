@@ -1,10 +1,16 @@
 using System.Reflection;
-using FakeItEasy.AutoFake.Parameters;
 
 namespace FakeItEasy.AutoFake.Resolvers
 {
-    internal interface IValueResolver
+    /// <summary>
+    /// A parameter value resolver.
+    /// </summary>
+    public interface IValueResolver
     {
-        ResolvedValue Resolve(ParameterInfo parameterInfo, params IParameter[] parameters);
+        /// <summary>
+        /// Resolves a parameter value by the specified parameter information.
+        /// </summary>
+        /// <param name="parameterInfo">The parameter information.</param>
+        ResolvedValue Resolve(ParameterInfo parameterInfo);
     }
 }

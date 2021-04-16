@@ -12,7 +12,7 @@ namespace FakeItEasy.AutoFake.Resolvers
             var pi = A.Fake<ParameterInfo>();
             FailedValueResolver sut = new();
             var result = sut.Resolve(pi);
-            result.Should().BeOfType<ResolvedFailedValue>();
+            result.Should().BeOfType<FailedResolvedValue>();
         }
     }
 }

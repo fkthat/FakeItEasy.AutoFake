@@ -18,6 +18,6 @@ namespace FakeItEasy.AutoFake.Resolvers
         protected override ResolvedValue? TryResolve(ParameterInfo parameterInfo,
             params IParameter[] parameters) =>
             _predefinedValues.TryGetValue(parameterInfo.ParameterType, out var v)
-            ? new ResolvedSuccessValue(v) : null;
+            ? new SuccessResolvedValue(v) : null;
     }
 }

@@ -1,5 +1,4 @@
 using System.Reflection;
-using FakeItEasy.AutoFake.Fakes;
 using FakeItEasy.AutoFake.Parameters;
 using FakeItEasy.Core;
 
@@ -19,7 +18,7 @@ namespace FakeItEasy.AutoFake.Resolvers
         {
             try
             {
-                return new ResolvedSuccessValue(_fakeFactory.Get(parameterInfo.ParameterType));
+                return new SuccessResolvedValue(_fakeFactory.CreateFake(parameterInfo.ParameterType));
             }
             catch (FakeCreationException)
             {
