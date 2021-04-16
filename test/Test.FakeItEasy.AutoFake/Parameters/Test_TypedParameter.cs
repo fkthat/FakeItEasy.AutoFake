@@ -1,3 +1,4 @@
+using System.Reflection;
 using FluentAssertions;
 using Xunit;
 
@@ -8,7 +9,8 @@ namespace FakeItEasy.AutoFake
         [Fact]
         public void Match_ShouldMatchByType()
         {
-            var pi = GetType().GetMethod("Foo")!.GetParameters()[0];
+            var pi = A.Fake<ParameterInfo>();
+            A.CallTo(() => pi.ParameterType).Returns(typeof(int));
             var sut = new TypedParameter(typeof(int), 42);
             sut.Match(pi).Should().BeTrue();
             sut = new TypedParameter<int>(42);
@@ -18,16 +20,12 @@ namespace FakeItEasy.AutoFake
         [Fact]
         public void Resolve_ShouldReturnParameterValue()
         {
-            var pi = GetType().GetMethod("Foo")!.GetParameters()[0];
+            var pi = A.Fake<ParameterInfo>();
+            A.CallTo(() => pi.ParameterType).Returns(typeof(int));
             var sut = new TypedParameter(typeof(int), 42);
             sut.GetValue(pi).Should().Be(42);
             sut = new TypedParameter<int>(42);
             sut.GetValue(pi).Should().Be(42);
         }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage",
-            "xUnit1013:Public method should be marked as test",
-            Justification = "Publicity required for tests")]
-        public void Foo(int bar) { }
     }
 }
