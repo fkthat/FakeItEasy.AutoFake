@@ -22,7 +22,7 @@ try {
             dotnet build -c $Config
         }
         'test' {
-            dotnet test -c $Config
+            dotnet test -c $Config -l trx
         }
         'coverage' {
             dotnet tool restore &&
