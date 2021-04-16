@@ -1,9 +1,11 @@
+using System;
+using FakeItEasy.AutoFake.Parameters;
 using FluentAssertions;
 using Xunit;
 
 namespace FakeItEasy.AutoFake
 {
-    public class Test_AutoFakerExtensions
+    public class Test_IAutoFaker
     {
         public interface IFoo { }
 
@@ -11,7 +13,7 @@ namespace FakeItEasy.AutoFake
         public void CreateInstance_ShouldCallAutoFaker()
         {
             var foo = new Foo();
-            var autoFaker = A.Fake<IAutoFaker>();
+            IAutoFaker autoFaker = A.Fake<AF>();
             A.CallTo(() => autoFaker.CreateInstance(typeof(Foo))).Returns(foo);
             var r = autoFaker.CreateInstance<Foo>();
             A.CallTo(() => autoFaker.CreateInstance(typeof(Foo))).MustHaveHappened();
@@ -22,7 +24,7 @@ namespace FakeItEasy.AutoFake
         public void Get_ShouldCallAutoFaker()
         {
             var foo = A.Fake<IFoo>();
-            var autoFaker = A.Fake<IAutoFaker>();
+            IAutoFaker autoFaker = A.Fake<AF>();
             A.CallTo(() => autoFaker.Get(typeof(IFoo))).Returns(foo);
             var r = autoFaker.Get<IFoo>();
             A.CallTo(() => autoFaker.Get(typeof(IFoo))).MustHaveHappened();
@@ -30,5 +32,12 @@ namespace FakeItEasy.AutoFake
         }
 
         public class Foo : IFoo { }
+
+        public abstract class AF : IAutoFaker
+        {
+            public abstract object CreateInstance(Type type, params IParameter[] parameters);
+
+            public abstract object Get(Type type);
+        }
     }
 }
