@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace FakeItEasy.AutoFake.Resolvers
+namespace FakeItEasy.AutoFake
 {
     /// <summary>
     /// A value resolver with fallback. It resolves the value if can, otherwise call the next

@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace FakeItEasy.AutoFake.Resolvers
+namespace FakeItEasy.AutoFake
 {
     /// <summary>
     /// A value resolver that always fails. Intended to be the last resolver in the chain.

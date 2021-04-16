@@ -1,7 +1,7 @@
 using System.Reflection;
 using FakeItEasy.Core;
 
-namespace FakeItEasy.AutoFake.Resolvers
+namespace FakeItEasy.AutoFake
 {
     /// <summary>
     /// Resolves the parameter with the fake.

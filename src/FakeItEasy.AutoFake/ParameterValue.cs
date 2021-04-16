@@ -1,4 +1,4 @@
-namespace FakeItEasy.AutoFake.Resolvers
+namespace FakeItEasy.AutoFake
 {
     /// <summary>
     /// A result of the value resolution.

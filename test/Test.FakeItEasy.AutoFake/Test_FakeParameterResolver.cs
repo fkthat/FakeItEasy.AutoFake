@@ -3,7 +3,7 @@ using FakeItEasy.Core;
 using FluentAssertions;
 using Xunit;
 
-namespace FakeItEasy.AutoFake.Resolvers
+namespace FakeItEasy.AutoFake
 {
     public class Test_FakeParameterResolver
     {

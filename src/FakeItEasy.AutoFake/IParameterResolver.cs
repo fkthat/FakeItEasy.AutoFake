@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace FakeItEasy.AutoFake.Resolvers
+namespace FakeItEasy.AutoFake
 {
     /// <summary>
     /// A parameter value resolver.

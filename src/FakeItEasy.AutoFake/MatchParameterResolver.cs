@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using FakeItEasy.AutoFake.Parameters;
 
-namespace FakeItEasy.AutoFake.Resolvers
+namespace FakeItEasy.AutoFake
 {
     /// <summary>
     /// Resolves value by matching <c cref="IParameter"/> array.

@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
-using FakeItEasy;
 using FakeItEasy.AutoFake.Parameters;
 using FluentAssertions;
 using Xunit;
 
-namespace FakeItEasy.AutoFake.Resolvers
+namespace FakeItEasy.AutoFake
 {
     public class Test_MatchParameterResolver
     {
