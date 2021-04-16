@@ -4,15 +4,15 @@ using Xunit;
 
 namespace FakeItEasy.AutoFake.Resolvers
 {
-    public class Test_FailedValueResolver
+    public class Test_FailedParameterResolver
     {
         [Fact]
         public void Resolve_ShouldReturnFailed()
         {
             var pi = A.Fake<ParameterInfo>();
-            FailedValueResolver sut = new();
-            var result = sut.Resolve(pi);
-            result.Should().BeOfType<FailedResolvedValue>();
+            FailedParameterResolver sut = new();
+            var result = sut.GetValue(pi);
+            result.Should().BeOfType<FailedParameterValue>();
         }
     }
 }

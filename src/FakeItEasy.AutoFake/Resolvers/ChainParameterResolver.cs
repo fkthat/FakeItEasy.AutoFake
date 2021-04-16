@@ -6,15 +6,15 @@ namespace FakeItEasy.AutoFake.Resolvers
     /// A value resolver with fallback. It resolves the value if can, otherwise call the next
     /// resolver in the chain.
     /// </summary>
-    public abstract class ChainValueResolver : IValueResolver
+    public abstract class ChainParameterResolver : IParameterResolver
     {
-        private readonly IValueResolver _next;
+        private readonly IParameterResolver _next;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChainValueResolver"/> class.
+        /// Initializes a new instance of the <see cref="ChainParameterResolver"/> class.
         /// </summary>
         /// <param name="next">The next value resolver in the chain.</param>
-        public ChainValueResolver(IValueResolver next)
+        protected ChainParameterResolver(IParameterResolver next)
         {
             _next = next;
         }
@@ -23,14 +23,14 @@ namespace FakeItEasy.AutoFake.Resolvers
         /// Resolves a parameter value by the specified parameter information.
         /// </summary>
         /// <param name="parameterInfo">The parameter information.</param>
-        public ResolvedValue Resolve(ParameterInfo parameterInfo) =>
-            TryResolve(parameterInfo) ?? _next.Resolve(parameterInfo);
+        public ParameterValue GetValue(ParameterInfo parameterInfo) =>
+            TryGetValue(parameterInfo) ?? _next.GetValue(parameterInfo);
 
         /// <summary>
         /// Tries the resolve the value of the specified parameter.
         /// </summary>
         /// <param name="parameterInfo">The parameter information.</param>
         /// <returns>The resolved value if it can to resolve it. Otherwise returns null.</returns>
-        protected abstract ResolvedValue? TryResolve(ParameterInfo parameterInfo);
+        protected abstract ParameterValue? TryGetValue(ParameterInfo parameterInfo);
     }
 }

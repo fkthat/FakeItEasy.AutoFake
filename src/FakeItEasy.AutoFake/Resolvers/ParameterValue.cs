@@ -3,20 +3,20 @@ namespace FakeItEasy.AutoFake.Resolvers
     /// <summary>
     /// A result of the value resolution.
     /// </summary>
-    public abstract class ResolvedValue
+    public abstract class ParameterValue
     {
     }
 
     /// <summary>
     /// A result of a succesfull value resolution.
     /// </summary>
-    public class SuccessResolvedValue : ResolvedValue
+    public class SuccessParameterValue : ParameterValue
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SuccessResolvedValue"/> class.
+        /// Initializes a new instance of the <see cref="SuccessParameterValue"/> class.
         /// </summary>
         /// <param name="value">The resolved value.</param>
-        public SuccessResolvedValue(object? value)
+        public SuccessParameterValue(object? value)
         {
             Value = value;
         }
@@ -30,7 +30,7 @@ namespace FakeItEasy.AutoFake.Resolvers
     /// <summary>
     /// An unsuccessfull value resolution result.
     /// </summary>
-    public class FailedResolvedValue : ResolvedValue
+    public class FailedParameterValue : ParameterValue
     {
     }
 }
