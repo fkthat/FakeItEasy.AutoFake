@@ -5,7 +5,7 @@ namespace FakeItEasy.AutoFake
     /// <summary>
     /// Fake factory.
     /// </summary>
-    public class FakeFactory : IFakeFactory
+    internal class FakeFactory : IFakeFactory
     {
         /// <summary>
         /// Creates a fake of the specified type.

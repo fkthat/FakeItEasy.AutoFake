@@ -6,7 +6,7 @@ namespace FakeItEasy.AutoFake
     /// <summary>
     /// Caches fakes created by the underlying factory.
     /// </summary>
-    public class FakeFactoryCachingDecorator : IFakeFactory
+    internal class FakeFactoryCachingDecorator : IFakeFactory
     {
         private readonly IFakeFactory _fakeFactory;
         private readonly Dictionary<Type, object> _container = new();

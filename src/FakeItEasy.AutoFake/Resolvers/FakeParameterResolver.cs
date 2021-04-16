@@ -6,7 +6,7 @@ namespace FakeItEasy.AutoFake.Resolvers
     /// <summary>
     /// Resolves the parameter with the fake.
     /// </summary>
-    public class FakeParameterResolver : ChainParameterResolver
+    internal class FakeParameterResolver : ChainParameterResolver
     {
         private readonly IFakeFactory _fakeFactory;
 
