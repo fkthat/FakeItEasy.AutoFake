@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace FakeItEasy.AutoFake.Parameters
+namespace FakeItEasy.AutoFake
 {
     /// <summary>
     /// <see cref="IParameter"/> implementation that resolves to the constant value.

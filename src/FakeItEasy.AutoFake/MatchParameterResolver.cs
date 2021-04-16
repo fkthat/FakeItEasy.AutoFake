@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using FakeItEasy.AutoFake.Parameters;
 
 namespace FakeItEasy.AutoFake
 {

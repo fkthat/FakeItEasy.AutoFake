@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace FakeItEasy.AutoFake.Parameters
+namespace FakeItEasy.AutoFake
 {
     /// <summary>
     /// The most generic implementation of <see cref="IParameter"/>.

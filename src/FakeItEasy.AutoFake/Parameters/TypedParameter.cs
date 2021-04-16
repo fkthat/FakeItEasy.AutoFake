@@ -1,6 +1,6 @@
 using System;
 
-namespace FakeItEasy.AutoFake.Parameters
+namespace FakeItEasy.AutoFake
 {
     /// <summary>
     /// <see cref="IParameter"/> implementation that matches by type.

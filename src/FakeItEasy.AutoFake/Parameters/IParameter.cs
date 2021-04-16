@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace FakeItEasy.AutoFake.Parameters
+namespace FakeItEasy.AutoFake
 {
     /// <summary>
     /// A parameter to pass additionaly to the <c cref="AutoFaker.CreateInstance"/>.
