@@ -1,7 +1,7 @@
-namespace FakeItEasy.AutoFake.Parameters
+namespace FakeItEasy.AutoFake
 {
     /// <summary>
-    /// <see cref="IParameter"/> implemanrtation that matches by name.
+    /// <see cref="IParameter"/> implementation that matches by the parameter name.
     /// </summary>
     public class NamedParameter : ConstantValueParameter
     {

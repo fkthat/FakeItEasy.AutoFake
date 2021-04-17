@@ -1,10 +1,10 @@
 using System;
 using System.Reflection;
 
-namespace FakeItEasy.AutoFake.Parameters
+namespace FakeItEasy.AutoFake
 {
     /// <summary>
-    /// <see cref="IParameter"/> implementation that resolves to constant value.
+    /// <see cref="IParameter"/> implementation that resolves to the constant value.
     /// </summary>
     public class ConstantValueParameter : ResolvedParameter
     {
@@ -12,7 +12,7 @@ namespace FakeItEasy.AutoFake.Parameters
         /// Initializes a new instance of the <see cref="ConstantValueParameter"/> class.
         /// </summary>
         /// <param name="match">The match predicate.</param>
-        /// <param name="value">The value to resolve paramtet to.</param>
+        /// <param name="value">The value to resolve parameter to.</param>
         public ConstantValueParameter(Func<ParameterInfo, bool> match, object? value)
             : base(match, pi => value)
         {
