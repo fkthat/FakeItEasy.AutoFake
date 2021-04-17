@@ -1,16 +1,7 @@
 # Azure Pipelines CI
 
-trigger:
-  branches:
-    include:
-      - develop
-      - master
-  tags:
-    include:
-      - '*.*.*'
-pr:
-  - develop
-  - master
+trigger: none
+pr: none
 
 variables:
   BuildConfiguration: Debug
@@ -21,14 +12,14 @@ pool:
 
 steps:
 
-- task: Bash@3
-  condition: startsWith(variables['Build.SourceBranch'], 'ref/tags/')
-  displayName: Set up Release build
-  inputs:
-    targetType: 'inline'
-    script: |
-      echo "##vso[task.setvariable variable=BuildConfiguration]Release"
-      echo "##vso[task.setvariable variable=VersionSuffix]"
+#- task: Bash@3
+#  condition: startsWith(variables['Build.SourceBranch'], 'ref/tags/')
+#  displayName: Set up Release build
+#  inputs:
+#    targetType: 'inline'
+#    script: |
+#      echo "##vso[task.setvariable variable=BuildConfiguration]Release"
+#      echo "##vso[task.setvariable variable=VersionSuffix]"
 
 - task: UseDotNet@2
   displayName: Use SDK
@@ -79,7 +70,6 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: Create NuGet package
-  condition: eq(variables['Build.Reason'], 'IndividualCI')
   inputs:
     command: 'custom'
     projects: 'src/**/*.csproj'
@@ -90,7 +80,6 @@ steps:
 
 - task: NuGetCommand@2
   displayName: Publish NuGet package
-  condition: eq(variables['Build.Reason'], 'IndividualCI')
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg'
