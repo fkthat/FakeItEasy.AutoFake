@@ -12,8 +12,10 @@
     <AssemblyVersion>$(VersionPrefix).0</AssemblyVersion>
     <FileVersion>$(VersionPrefix).0</FileVersion>
     <PackageProjectUrl>https://github.com/fkthat/AutoFake</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/fkthat/AutoFake</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/fkthat/AutoFake</RepositoryUrl>
+    <RepositoryBranch>$(RepositoryBranch)</RepositoryBranch>
+    <RepositoryCommit>$(RepositoryCommit)</RepositoryCommit>
     <PackageTags>fkthat,di,mock,fakeiteasy</PackageTags>
     <Description>An auto-mocking container that generates mocks using FakeItEasy.</Description>
     <PackageReleaseNotes>@(ReleaseNoteLines, '%0a')</PackageReleaseNotes>

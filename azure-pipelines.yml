@@ -98,8 +98,10 @@ steps:
       command: 'custom'
       custom: 'tool'
       arguments: >-
-        run reportgenerator -reports:test/**/coverage.cobertura.xml
-        -targetdir:Coverage -reporttypes:Cobertura
+        run reportgenerator
+          -reports:test/**/coverage.cobertura.xml
+          -targetdir:Coverage
+          -reporttypes:Cobertura
 
   - task: PublishCodeCoverageResults@1
     displayName: Publish coverage report
@@ -117,8 +119,12 @@ steps:
       projects: 'src/**/*.csproj'
       custom: 'pack'
       arguments: >-
-        -c $(BuildConfiguration) -o $(Build.ArtifactStagingDirectory)
-        -p:VersionSuffix=$(VersionSuffix) --no-build
+        -c $(BuildConfiguration)
+        -o $(Build.ArtifactStagingDirectory)
+        -p:VersionSuffix=$(VersionSuffix)
+        -p:RepositoryBranch=$(Build.SourceBranch)
+        -p:RepositoryCommit=$(Build.SourceVersion)
+        --no-build
 
   - task: NuGetCommand@2
     displayName: Publish NuGet package
