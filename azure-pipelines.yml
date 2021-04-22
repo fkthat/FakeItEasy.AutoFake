@@ -99,9 +99,9 @@ steps:
       custom: 'tool'
       arguments: >-
         run reportgenerator
-        reports:test/**/coverage.cobertura.xml
-        targetdir:Coverage
-        reporttypes:Cobertura
+        -reports:test/**/coverage.cobertura.xml
+        -targetdir:Coverage
+        -reporttypes:Cobertura
 
   - task: PublishCodeCoverageResults@1
     displayName: Publish coverage report
