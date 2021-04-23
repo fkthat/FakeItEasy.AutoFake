@@ -1,7 +1,7 @@
 <Project>
   <!-- Version -->
   <PropertyGroup>
-    <VersionPrefix>3.1.0</VersionPrefix>
+    <VersionPrefix>3.2.0</VersionPrefix>
   </PropertyGroup>
   <!-- package properties -->
   <PropertyGroup>
@@ -12,8 +12,10 @@
     <AssemblyVersion>$(VersionPrefix).0</AssemblyVersion>
     <FileVersion>$(VersionPrefix).0</FileVersion>
     <PackageProjectUrl>https://github.com/fkthat/FakeItEasy.AutoFake</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/fkthat/FakeItEasy.AutoFake</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/fkthat/FakeItEasy.AutoFake</RepositoryUrl>
+    <RepositoryBranch>$(RepositoryBranch)</RepositoryBranch>
+    <RepositoryCommit>$(RepositoryCommit)</RepositoryCommit>
     <PackageTags>DI, Mock, FakeItEasy</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>An auto-mocking container that generates mocks using FakeItEasy</Description>
