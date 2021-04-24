@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 using FakeItEasy.Core;
 
 namespace FakeItEasy.AutoFake
@@ -24,7 +21,7 @@ namespace FakeItEasy.AutoFake
         /// </summary>
         /// <param name="type">The type of an instance to create.</param>
         /// <returns>The created instance.</returns>
-        public object CreateInstance(Type type, params IParameter[] parameters)
+        public object CreateInstance(Type type, params Parameters.IParameter[] parameters)
         {
             object?[]? values = null;
 
@@ -77,16 +74,17 @@ namespace FakeItEasy.AutoFake
             return value;
         }
 
-        private object?[] Resolve(ParameterInfo[] pis, IParameter[] parameters) =>
+        private object?[] Resolve(ParameterInfo[] pis, Parameters.IParameter[] parameters) =>
             pis.Select(p => Resolve(p, parameters)).ToArray();
 
-        private object? Resolve(ParameterInfo pi, IParameter[] parameters)
+        private object? Resolve(ParameterInfo pi, Parameters.IParameter[] parameters)
         {
-            var p = parameters.FirstOrDefault(x => x.Match(pi));
-
-            if (p != null)
+            foreach (var parameter in parameters)
             {
-                return p.Resolve(pi);
+                if (parameter.TryResolve(pi, out var value))
+                {
+                    return value;
+                }
             }
 
             if (_predefined.ContainsKey(pi.ParameterType))

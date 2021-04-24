@@ -1,15 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 
-namespace FakeItEasy.AutoFake
+namespace FakeItEasy.AutoFake.Parameters
 {
     /// <summary>
-    /// <see cref="IParameter"/> implemanrtation that matches by type.
+    /// Matches a parameter by its type.
     /// </summary>
-    public class TypedParameter : ConstantValueParameter
+    public class TypedParameter : ResolvedParameter
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TypedParameter"/> class.
@@ -17,13 +13,24 @@ namespace FakeItEasy.AutoFake
         /// <param name="type">Parameter type to match.</param>
         /// <param name="value">The value to resolve paramtet to.</param>
         public TypedParameter(Type type, object? value)
-            : base(pi => pi.ParameterType == type, value)
+            : base(
+                  pi => pi.ParameterType == type,
+                  ValidateValueType(type, value)
+                    ? pi => value
+                    : throw new ArgumentException("Invalid value type.", nameof(value)))
         {
         }
+
+        private static bool ValidateValueType(Type type, object? value) =>
+            value is not null && type.IsAssignableFrom(value.GetType()) ||
+                // value is null
+                type.IsClass ||
+                type.IsInterface ||
+                type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
     }
 
     /// <summary>
-    /// <see cref="IParameter"/> implemanrtation that matches by type.
+    /// Matches a parameter by its type.
     /// </summary>
     /// <typeparam name="T">Parameter type to match.</typeparam>
     public class TypedParameter<T> : TypedParameter
