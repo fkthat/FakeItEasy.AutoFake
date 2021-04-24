@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using FakeItEasy.AutoFake.Parameters;
 using FakeItEasy.Core;
 using FluentAssertions;
-using Newtonsoft.Json;
 using Xunit;
 
 namespace FakeItEasy.AutoFake
