@@ -1,0 +1,137 @@
+#
+# Azure Pipelines CI
+#
+
+trigger:
+  branches:
+    include:
+      - develop
+      - master
+  paths:
+    include:
+      - src
+      - test
+      - global.json
+      - Directory.Build.props
+      - RELEASE-NOTES.txt
+
+# Default values
+variables:
+  # debug build
+  BuildConfiguration: Debug
+  # add -CI-* to the version
+  VersionSuffix: CI-$(Build.BuildNumber)
+  # do not build NuGet package
+  NuGet: false
+
+pool:
+  vmImage: ubuntu-20.04
+
+steps:
+
+  # Build NuGet only for develop and master branch commits
+  # the -CI-* version for the develop branch and release one for master
+
+  - task: Bash@3
+    displayName: Setup build configuration
+    inputs:
+      targetType: inline
+      script: |
+        if [[ "$(Build.SourceBranchName)" == "develop" ]]; then
+          echo "##vso[task.setvariable variable=NuGet]true"
+        fi
+        if [[ "$(Build.SourceBranchName)" == "master" ]]; then
+          echo "##vso[task.setvariable variable=NuGet]true"
+          echo "##vso[task.setvariable variable=BuildConfiguration]Release"
+          echo "##vso[task.setvariable variable=VersionSuffix]"
+        fi
+
+  - task: Bash@3
+    displayName: Show build configuration
+    inputs:
+      targetType: inline
+      script: |
+        echo BuildConfiguration: $(BuildConfiguration)
+        echo VersionSuffix: $(VersionSuffix)
+        echo NuGet: $(NuGet)
+
+  # The typical restore/build/test pipeline
+
+  - task: UseDotNet@2
+    displayName: Use SDK
+    inputs:
+      packageType: 'sdk'
+      useGlobalJson: true
+
+  - task: DotNetCoreCLI@2
+    displayName: Restore NuGet packages
+    inputs:
+      command: 'restore'
+      arguments: -c $(BuildConfiguration)
+
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    inputs:
+      command: 'build'
+      arguments: -c $(BuildConfiguration) --no-restore
+
+  - task: DotNetCoreCLI@2
+    displayName: Run tests
+    inputs:
+      command: 'test'
+      publishTestResults: true
+      arguments: -c $(BuildConfiguration) --no-build
+
+  # Since Azure Pipelines isn't able to merge several coverage reports
+  # (from different projects) do it manually with the tool
+
+  - task: DotNetCoreCLI@2
+    displayName: Restore coverage reporting tool
+    inputs:
+      command: 'custom'
+      custom: 'tool'
+      arguments: restore
+
+  - task: DotNetCoreCLI@2
+    displayName: Generate coverage report
+    inputs:
+      command: 'custom'
+      custom: 'tool'
+      arguments: >-
+        run reportgenerator
+        -reports:test/**/coverage.cobertura.xml
+        -targetdir:Coverage
+        -reporttypes:Cobertura
+
+  - task: PublishCodeCoverageResults@1
+    displayName: Publish coverage report
+    inputs:
+      codeCoverageTool: 'Cobertura'
+      summaryFileLocation: 'Coverage/Cobertura.xml'
+
+  # Build and publish NuGet package only if NuGet == true
+
+  - task: DotNetCoreCLI@2
+    displayName: Create NuGet package
+    condition: and(succeeded(), eq(variables.NuGet, true))
+    inputs:
+      command: 'custom'
+      projects: 'src/**/*.csproj'
+      custom: 'pack'
+      arguments: >-
+        -c $(BuildConfiguration)
+        -o $(Build.ArtifactStagingDirectory)
+        -p:VersionSuffix=$(VersionSuffix)
+        -p:RepositoryBranch=$(Build.SourceBranch)
+        -p:RepositoryCommit=$(Build.SourceVersion)
+        --no-build
+
+  - task: NuGetCommand@2
+    displayName: Publish NuGet package
+    condition: and(succeeded(), eq(variables.NuGet, true))
+    inputs:
+      command: 'push'
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg'
+      nuGetFeedType: 'external'
+      publishFeedCredentials: 'MyGet'
+
