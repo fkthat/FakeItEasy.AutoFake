@@ -1,7 +1,12 @@
-[![Build Status](https://dev.azure.com/FkThat/FakeItEasy.AutoFake/_apis/build/status/CI?branchName=develop)](https://dev.azure.com/FkThat/FakeItEasy.AutoFake/_build/latest?definitionId=24&branchName=develop)
-![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/FkThat/FakeItEasy.AutoFake/24)
-
 # FakeItEasy.AutoFake ![Nuget](https://img.shields.io/nuget/v/FakeItEasy.AutoFake)
+
+[![Build Status](https://dev.azure.com/FkThat/CI/_apis/build/status/AutoFake?branchName=develop)](https://dev.azure.com/FkThat/FakeItEasy.AutoFake/_build/latest?definitionId=40&branchName=develop)
+[![Azure DevOps tests (develop)](https://img.shields.io/azure-devops/tests/FkThat/CI/40/develop)](https://dev.azure.com/FkThat/CI/_build/latest?definitionId=40&branchName=develop)
+[![Azure DevOps coverage (develop)](https://img.shields.io/azure-devops/coverage/FkThat/CI/40/develop)](https://dev.azure.com/FkThat/CI/_build/latest?definitionId=40&branchName=develop)
+
+## Latest dev build (MyGet)
+
+[![MyGet](https://img.shields.io/myget/fkthat/vpre/FakeItEasy.AutoFake?label=FakeItEasy.AutoFake)](https://www.myget.org/feed/fkthat/package/nuget/FakeItEasy.AutoFake)
 
 An auto-mocking container that generates mocks using FakeItEasy.
 
@@ -30,7 +35,7 @@ A.CallTo(() => accountData.SetValue(111)).MustHaveHappened();
 // the predefined instance of the injectable service
 var accountData = new AccountData(42);
 
-var faker = new AutoFaker(configure => 
+var faker = new AutoFaker(configure =>
     // Use<> configures faker to use an instance
     configure.Use<IAccountData>(accountData));
 
