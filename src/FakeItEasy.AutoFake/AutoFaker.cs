@@ -6,7 +6,7 @@ using FakeItEasy.Core;
 
 namespace FakeItEasy.AutoFake
 {
-    public class AutoFaker : IAutoFaker
+    public class AutoFaker
     {
         private readonly IDictionary<Type, object> _container = new Dictionary<Type, object>();
         private readonly IDictionary<Type, object> _predefined = new Dictionary<Type, object>();
@@ -74,8 +74,24 @@ namespace FakeItEasy.AutoFake
             return value;
         }
 
+        /// <summary>
+        /// Creates the instance of the <typeparamref name="T"/> type.
+        /// </summary>
+        /// <returns>The created instance.</returns>
+        public T CreateInstance<T>(params Parameters.IParameter[] parameters)
+            => (T)CreateInstance(typeof(T), parameters);
+
+        /// <summary>
+        /// Gets the service that will be provided by the AutoFake container. If the service of the
+        /// <typeparamref name="T"/> type is provided by <see cref="IAutoMockerConfiguration.Use"/>
+        /// it will return the instance provided. If a fake service of the <typeparamref name="T"/>
+        /// wasn't created yet it will create and return a new fake.
+        /// </summary>
+        /// <returns>The service instance.</returns>
+        public T Get<T>() where T : class => (T)Get(typeof(T));
+
         private object?[] Resolve(ParameterInfo[] pis, Parameters.IParameter[] parameters) =>
-            pis.Select(p => Resolve(p, parameters)).ToArray();
+                            pis.Select(p => Resolve(p, parameters)).ToArray();
 
         private object? Resolve(ParameterInfo pi, Parameters.IParameter[] parameters)
         {
