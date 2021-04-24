@@ -23,7 +23,6 @@ namespace FakeItEasy.AutoFake
         /// <exception cref="ArgumentNullException">
         /// <paramref name="configuration"/> or <paramref name="instance"/> is null.
         /// </exception>
-        IAutoFakerConfigurationBuilder Use<T>(T instance) =>
-            Use(typeof(T), instance);
+        sealed IAutoFakerConfigurationBuilder Use<T>(T instance) => Use(typeof(T), instance);
     }
 }
