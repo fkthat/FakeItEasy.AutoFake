@@ -1,51 +1,37 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FakeItEasy;
 using FluentAssertions;
 using Xunit;
-using Xunit.Sdk;
 
 namespace FakeItEasy.AutoFake
 {
     public class Test_AutoFakerConfiguration
     {
-        public interface IFoo
+        [Fact]
+        public void Use_ShouldValidateInstance()
         {
+            AutoFakerConfiguration testee = new();
+
+            testee.Invoking(t => t.Use(typeof(int), "foo"))
+                .Should().Throw<ArgumentException>().Which.ParamName.Should().Be("instance");
+
+            testee.Invoking(t => t.Use(typeof(int), null))
+                .Should().Throw<ArgumentException>().Which.ParamName.Should().Be("instance");
+
+            testee.Invoking(t => t.Use(typeof(string), null)).Should().NotThrow();
+
+            testee.Invoking(t => t.Use(typeof(int?), null)).Should().NotThrow();
         }
 
         [Fact]
-        public void Use_ShouldValidateArguments()
+        public void Use_ShouldAddPredefinedInstance()
         {
-            var container = new Dictionary<Type, object>();
-            var sut = new AutoFakerConfiguration(container);
+            AutoFakerConfiguration testee = new();
+            var result = testee.Use(typeof(int), 42);
+            result.Should().Be(testee);
 
-            // instance is not an instance of type
-            sut.Invoking(s => s.Use(type: typeof(IFoo), instance: "Bar"))
-                .Should().Throw<ArgumentException>().Which.ParamName
-                .Should().Be("instance");
-        }
-
-        [Fact]
-        public void Use_ShouldAddPredefinedService()
-        {
-            var container = new Dictionary<Type, object>();
-            var foo = A.Fake<IFoo>();
-            var sut = new AutoFakerConfiguration(container);
-            sut.Use(typeof(IFoo), foo);
-            container.Should().ContainKey(typeof(IFoo))
-                .WhichValue.Should().BeSameAs(foo);
-        }
-
-        [Fact]
-        public void Use_ShouldReturnInstanceItself()
-        {
-            var container = new Dictionary<Type, object>();
-            var foo = A.Fake<IFoo>();
-            var sut = new AutoFakerConfiguration(container);
-            var result = sut.Use(typeof(IFoo), foo);
-            result.Should().BeSameAs(sut);
+            testee.PredefinedDependecies.Should().BeEquivalentTo(
+                new Dictionary<Type, object?> { [typeof(int)] = 42 });
         }
     }
 }

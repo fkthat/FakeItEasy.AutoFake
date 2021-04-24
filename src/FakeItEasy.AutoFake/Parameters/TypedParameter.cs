@@ -15,8 +15,7 @@ namespace FakeItEasy.AutoFake.Parameters
         public TypedParameter(Type type, object? value)
             : base(
                   pi => pi.ParameterType == type,
-                  ValidateValueType(type, value)
-                    ? pi => value
+                  type.CanBe(value) ? pi => value
                     : throw new ArgumentException("Invalid value type.", nameof(value)))
         {
         }

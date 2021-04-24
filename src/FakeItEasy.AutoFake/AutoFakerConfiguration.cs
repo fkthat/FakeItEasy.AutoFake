@@ -1,30 +1,22 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FakeItEasy.AutoFake
 {
-    internal class AutoFakerConfiguration : IAutoFakerConfiguration
+    internal class AutoFakerConfiguration : IAutoFakerConfiguration, IAutoFakerConfigurationBuilder
     {
-        private readonly IDictionary<Type, object> _container;
+        private readonly Dictionary<Type, object?> _predefinedDepenedecies = new();
 
-        public AutoFakerConfiguration(IDictionary<Type, object> container)
-        {
-            _container = container;
-        }
+        public IReadOnlyDictionary<Type, object?> PredefinedDependecies => _predefinedDepenedecies;
 
-        public IAutoFakerConfiguration Use(Type type, object instance)
+        public IAutoFakerConfigurationBuilder Use(Type type, object? instance)
         {
-            if (!type.IsAssignableFrom(instance.GetType()))
+            if (!type.CanBe(instance))
             {
-                throw new ArgumentException(
-                    $"The {nameof(instance)} is not of the {type} type.",
-                    nameof(instance));
+                throw new ArgumentException("Invalid instance type.", nameof(instance));
             }
 
-            _container.Add(type, instance);
+            _predefinedDepenedecies.Add(type, instance);
             return this;
         }
     }
