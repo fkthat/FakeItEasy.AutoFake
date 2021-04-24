@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FakeItEasy.AutoFake
 {
@@ -15,7 +12,7 @@ namespace FakeItEasy.AutoFake
         /// </summary>
         /// <param name="type">The type of an instance to create.</param>
         /// <returns>The created instance.</returns>
-        object CreateInstance(Type type, params IParameter[] parameters);
+        object CreateInstance(Type type, params Parameters.IParameter[] parameters);
 
         /// <summary>
         /// Gets the service that will be provided by the AutoFake container. If the service of the
@@ -27,7 +24,7 @@ namespace FakeItEasy.AutoFake
         /// <returns>The service instance.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming",
             "CA1716:Identifiers should not match keywords",
-            Justification = "Keep this name for 'compatibility' with Moq.AutoFake.")]
+            Justification = "Keep this name for 'compatibility' with Moq.AutoMock.")]
         object Get(Type type);
     }
 }
