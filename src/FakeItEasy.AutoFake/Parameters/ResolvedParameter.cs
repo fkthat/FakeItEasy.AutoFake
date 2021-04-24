@@ -25,21 +25,18 @@ namespace FakeItEasy.AutoFake.Parameters
         }
 
         /// <summary>
-        /// Matches the specified parameter information.
+        /// Tries to resolve parameter value.
         /// </summary>
         /// <param name="parameterInfo">The parameter information.</param>
+        /// <param name="value">The resolved value on success, <c cref="false"/> otherwise.</param>
         /// <returns>
-        /// True if the value of specified parameter can be resolved, false otherwise.
+        /// <c cref="true"/> if the parameter successfully resolved, <c cref="false"/> otherwise.
         /// </returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public bool Match(ParameterInfo parameterInfo) => _match(parameterInfo);
-
-        /// <summary>
-        /// Resolves value for the specified parameter.
-        /// </summary>
-        /// <param name="parameterInfo">The parameter information.</param>
-        /// <returns>Resolved value. <br/></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public object? Resolve(ParameterInfo parameterInfo) => _resolve(parameterInfo);
+        public bool TryResolve(ParameterInfo parameterInfo, out object? value)
+        {
+            var match = _match(parameterInfo);
+            value = match ? _resolve(parameterInfo) : null;
+            return match;
+        }
     }
 }

@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FakeItEasy;
+using System.Reflection;
 using FluentAssertions;
 using Xunit;
 
@@ -11,23 +7,25 @@ namespace FakeItEasy.AutoFake.Parameters
     public class Test_NamedParameter
     {
         [Fact]
-        public void Match_ShouldMatchByName()
+        public void TryResolve_ShouldReturnTrueAndValueOnSuccess()
         {
-            var pi = GetType().GetMethod(nameof(Foo))!.GetParameters()[0];
-            var sut = new NamedParameter("bar", 42);
-            sut.Match(pi).Should().BeTrue();
+            var pi = A.Fake<ParameterInfo>();
+            A.CallTo(() => pi.Name).Returns("foo");
+            NamedParameter testee = new("foo", 42);
+            var result = testee.TryResolve(pi, out var value);
+            result.Should().BeTrue();
+            value.Should().Be(42);
         }
 
         [Fact]
-        public void Resolve_ShouldReturnParameterValue()
+        public void TryResolve_ShouldReturnFalseAndNullOnFailure()
         {
-            var pi = GetType().GetMethod(nameof(Foo))!.GetParameters()[0];
-            var sut = new NamedParameter("bar", 42);
-            sut.Resolve(pi).Should().Be(42);
+            var pi = A.Fake<ParameterInfo>();
+            A.CallTo(() => pi.Name).Returns("foo");
+            NamedParameter testee = new("bar", 42);
+            var result = testee.TryResolve(pi, out var value);
+            result.Should().BeFalse();
+            value.Should().Be(null);
         }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage",
-            "xUnit1013:Public method should be marked as test", Justification = "<Pending>")]
-        public void Foo(int bar) { }
     }
 }

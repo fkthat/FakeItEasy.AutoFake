@@ -13,18 +13,6 @@ namespace FakeItEasy.AutoFake.Parameters
         public NamedParameter(string name, object? value)
             : base(pi => pi.Name == name, pi => value)
         {
-            Name = name;
-            Value = value;
         }
-
-        /// <summary>
-        /// Gets the matching parameter name.
-        /// </summary>
-        public string Name { get; }
-
-        /// <summary>
-        /// Gets the matching parameter value.
-        /// </summary>
-        public object? Value { get; }
     }
 }

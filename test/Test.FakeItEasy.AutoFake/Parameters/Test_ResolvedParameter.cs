@@ -8,25 +8,31 @@ namespace FakeItEasy.AutoFake.Parameters
     public class Test_ResolvedParameter
     {
         [Fact]
-        public void Match_ShouldUseCtorPredicate()
+        public void TryResolve_ShouldReturnTrueAndValueOnSuccess()
         {
-            var pi = A.Fake<ParameterInfo>();
             var match = A.Fake<Func<ParameterInfo, bool>>();
-            var resolve = A.Dummy<Func<ParameterInfo, object?>>();
+            var resolve = A.Fake<Func<ParameterInfo, object>>();
+            var pi = A.Fake<ParameterInfo>();
             A.CallTo(() => match(pi)).Returns(true);
-            var sut = new ResolvedParameter(match, resolve);
-            sut.Match(pi).Should().BeTrue();
+            A.CallTo(() => resolve(pi)).Returns(42);
+            var testee = new ResolvedParameter(match, resolve);
+            var result = testee.TryResolve(pi, out var value);
+            result.Should().BeTrue();
+            value.Should().Be(42);
         }
 
         [Fact]
-        public void Resolve_ShouldUseCtorResolver()
+        public void TryResolve_ShouldReturnFalseAndNullOnFailure()
         {
+            var match = A.Fake<Func<ParameterInfo, bool>>();
+            var resolve = A.Fake<Func<ParameterInfo, object>>();
             var pi = A.Fake<ParameterInfo>();
-            var match = A.Dummy<Func<ParameterInfo, bool>>();
-            var resolve = A.Fake<Func<ParameterInfo, object?>>();
-            A.CallTo(() => resolve(pi)).Returns(42);
-            var sut = new ResolvedParameter(match, resolve);
-            sut.Resolve(pi).Should().Be(42);
+            A.CallTo(() => match(pi)).Returns(false);
+            A.CallTo(() => resolve(pi)).Throws<InvalidOperationException>();
+            var testee = new ResolvedParameter(match, resolve);
+            var result = testee.TryResolve(pi, out var value);
+            result.Should().BeFalse();
+            value.Should().Be(null);
         }
     }
 }
