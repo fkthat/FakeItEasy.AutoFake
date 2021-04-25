@@ -96,7 +96,7 @@ namespace FakeItEasy.AutoFake
         public T Get<T>() where T : class => (T)Get(typeof(T));
 
         internal static IAutoFakerConfiguration CreateConfiguration(
-                                            Action<IAutoFakerConfigurationBuilder>? configure)
+            Action<IAutoFakerConfigurationBuilder>? configure)
         {
             var configuration = new AutoFakerConfiguration();
             configure?.Invoke(configuration);
