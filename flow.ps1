@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Position = 0, Mandatory = $true)]
-    [ValidateSet('start', 'finish')]
+    [ValidateSet('start', 'finish', 'abort')]
     $Cmd,
     [Parameter(Position = 1, Mandatory = $true)]
     [ValidateSet('feature', 'bugfix', 'release', 'hotfix')]
@@ -42,7 +42,8 @@ try {
                 throw 'Missed $Name parameter.'
             }
             'finish' {
-                $current = git branch --show-current
+                $current = git branch --show-current || `
+                    &{ throw $exeError }
 
                 if (-not ($current -match "^$SubCmd/")) {
                     throw "$current is not a $SubCmd branch."
@@ -67,6 +68,13 @@ try {
         'finish' {
             # cleanup the feature/etc branch
             git remote prune origin && `
+                git branch -d "$SubCmd/$Name" || `
+                &{ throw $exeError }
+        }
+        'abort' {
+            # drop both remote and local branches
+            git push -d origin "$SubCmd/$Name" && `
+                git remote prune origin && `
                 git branch -d "$SubCmd/$Name" || `
                 &{ throw $exeError }
         }
