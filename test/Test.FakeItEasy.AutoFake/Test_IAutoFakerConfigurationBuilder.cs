@@ -18,7 +18,7 @@ namespace FakeItEasy.AutoFake
 
         public abstract class C : IAutoFakerConfigurationBuilder
         {
-            public abstract IAutoFakerConfigurationBuilder Use(Type type, object instance);
+            public abstract IAutoFakerConfigurationBuilder Use(Type type, object? instance);
         }
     }
 }
