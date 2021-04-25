@@ -9,11 +9,16 @@ namespace FakeItEasy.AutoFake
     public class AutoFaker
     {
         private readonly IDictionary<Type, object> _container = new Dictionary<Type, object>();
-        private readonly IDictionary<Type, object> _predefined = new Dictionary<Type, object>();
+        private readonly IAutoFakerConfiguration _configuration;
 
-        public AutoFaker(Action<IAutoFakerConfiguration>? configure = null)
+        public AutoFaker(Action<IAutoFakerConfigurationBuilder>? configure = null)
+            : this(CreateConfiguration(configure))
         {
-            configure?.Invoke(new AutoFakerConfiguration(_predefined));
+        }
+
+        internal AutoFaker(IAutoFakerConfiguration configuration)
+        {
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -59,9 +64,9 @@ namespace FakeItEasy.AutoFake
         /// <returns>The service instance.</returns>
         public object Get(Type type)
         {
-            if (_predefined.ContainsKey(type))
+            if (_configuration.PredefinedDependecies.ContainsKey(type))
             {
-                throw new ArgumentException($"{type} is configured as predefined dependency.",
+                throw new ArgumentException($"{type} is configured as a predefined dependency.",
                     nameof(type));
             }
 
@@ -90,6 +95,14 @@ namespace FakeItEasy.AutoFake
         /// <returns>The service instance.</returns>
         public T Get<T>() where T : class => (T)Get(typeof(T));
 
+        internal static IAutoFakerConfiguration CreateConfiguration(
+                                            Action<IAutoFakerConfigurationBuilder>? configure)
+        {
+            var configuration = new AutoFakerConfiguration();
+            configure?.Invoke(configuration);
+            return configuration;
+        }
+
         private object?[] Resolve(ParameterInfo[] pis, Parameters.IParameter[] parameters) =>
                             pis.Select(p => Resolve(p, parameters)).ToArray();
 
@@ -97,15 +110,15 @@ namespace FakeItEasy.AutoFake
         {
             foreach (var parameter in parameters)
             {
-                if (parameter.TryResolve(pi, out var value))
+                if (parameter.TryResolve(pi, out var v1))
                 {
-                    return value;
+                    return v1;
                 }
             }
 
-            if (_predefined.ContainsKey(pi.ParameterType))
+            if (_configuration.PredefinedDependecies.TryGetValue(pi.ParameterType, out var v2))
             {
-                return _predefined[pi.ParameterType];
+                return v2;
             }
 
             return Get(pi.ParameterType);
