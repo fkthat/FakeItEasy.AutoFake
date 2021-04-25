@@ -41,6 +41,18 @@ namespace FakeItEasy.AutoFake
             var foo = A.Fake<IFoo>();
             A.CallTo(() => fakeFactory.CreateFake(typeof(IFoo))).Returns(foo);
             AutoFaker testee = new(configuration, fakeFactory);
+            var result = testee.Get(typeof(IFoo));
+            result.Should().Be(foo);
+        }
+
+        [Fact]
+        public void GetOfT_ShouldCallFakeFactory()
+        {
+            var configuration = A.Dummy<IAutoFakerConfiguration>();
+            var fakeFactory = A.Fake<IFakeFactory>();
+            var foo = A.Fake<IFoo>();
+            A.CallTo(() => fakeFactory.CreateFake(typeof(IFoo))).Returns(foo);
+            AutoFaker testee = new(configuration, fakeFactory);
             var result = testee.Get<IFoo>();
             result.Should().Be(foo);
         }
