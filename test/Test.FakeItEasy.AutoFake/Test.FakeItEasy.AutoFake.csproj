@@ -15,8 +15,8 @@
     <ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="coverage.cobertura.xml"/>
-    <EmbeddedResource Remove="coverage.cobertura.xml"/>
+    <Compile Remove="coverage.cobertura.xml" />
+    <EmbeddedResource Remove="coverage.cobertura.xml" />
     <None Remove="coverage.cobertura.xml" />
   </ItemGroup>
   <ItemGroup>

@@ -10,15 +10,24 @@ namespace FakeItEasy.AutoFake
     {
         private readonly IDictionary<Type, object> _container = new Dictionary<Type, object>();
         private readonly IAutoFakerConfiguration _configuration;
+        private readonly IFakeFactory _fakeFactory;
 
         public AutoFaker(Action<IAutoFakerConfigurationBuilder>? configure = null)
             : this(CreateConfiguration(configure))
         {
         }
 
-        internal AutoFaker(IAutoFakerConfiguration configuration)
+        internal AutoFaker(IAutoFakerConfiguration configuration) :
+            this(
+                configuration,
+                new FakeFactoryCacheDecorator(new FakeFactory(configuration)))
+        {
+        }
+
+        internal AutoFaker(IAutoFakerConfiguration configuration, IFakeFactory fakeFactory)
         {
             _configuration = configuration;
+            _fakeFactory = fakeFactory;
         }
 
         /// <summary>
@@ -62,22 +71,7 @@ namespace FakeItEasy.AutoFake
         /// </summary>
         /// <param name="type">The type of a service.</param>
         /// <returns>The service instance.</returns>
-        public object Get(Type type)
-        {
-            if (_configuration.PredefinedDependecies.ContainsKey(type))
-            {
-                throw new ArgumentException($"{type} is configured as a predefined dependency.",
-                    nameof(type));
-            }
-
-            if (!_container.TryGetValue(type, out object value))
-            {
-                value = Sdk.Create.Fake(type);
-                _container.Add(type, value);
-            }
-
-            return value;
-        }
+        public object Get(Type type) => _fakeFactory.CreateFake(type);
 
         /// <summary>
         /// Creates the instance of the <typeparamref name="T"/> type.
@@ -96,7 +90,7 @@ namespace FakeItEasy.AutoFake
         public T Get<T>() where T : class => (T)Get(typeof(T));
 
         internal static IAutoFakerConfiguration CreateConfiguration(
-                                            Action<IAutoFakerConfigurationBuilder>? configure)
+            Action<IAutoFakerConfigurationBuilder>? configure)
         {
             var configuration = new AutoFakerConfiguration();
             configure?.Invoke(configuration);

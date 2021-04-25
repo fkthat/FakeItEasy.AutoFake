@@ -8,13 +8,11 @@ namespace FakeItEasy.AutoFake
 {
     public class Test_AutoFaker
     {
-        public interface IAutoFaked
-        {
-        }
+        public interface IFoo { }
 
-        public interface IPredefined
-        {
-        }
+        public interface IAutoFaked { }
+
+        public interface IPredefined { }
 
         [Fact]
         public void CreateInstance_ShouldReturnNewInstance()
@@ -36,28 +34,15 @@ namespace FakeItEasy.AutoFake
         }
 
         [Fact]
-        public void Get_ShouldCreateAndReturnFake()
+        public void Get_ShouldCallFakeFactory()
         {
-            var sut = new AutoFaker();
-            var result = sut.Get<IAutoFaked>();
-            result.Should().BeAssignableTo<IAutoFaked>();
-        }
-
-        [Fact]
-        public void Get_ShouldReturnCachedFake()
-        {
-            AutoFaker testee = new();
-            var result1 = testee.Get<IAutoFaked>();
-            var result2 = testee.Get<IAutoFaked>();
-            result2.Should().BeSameAs(result1);
-        }
-
-        [Fact]
-        public void Get_ShouldThrowWithPredefined()
-        {
-            var predefined = A.Fake<IPredefined>();
-            AutoFaker testee = new(config => config.Use(predefined));
-            testee.Invoking(s => s.Get<IPredefined>()).Should().Throw<ArgumentException>();
+            var configuration = A.Dummy<IAutoFakerConfiguration>();
+            var fakeFactory = A.Fake<IFakeFactory>();
+            var foo = A.Fake<IFoo>();
+            A.CallTo(() => fakeFactory.CreateFake(typeof(IFoo))).Returns(foo);
+            AutoFaker testee = new(configuration, fakeFactory);
+            var result = testee.Get<IFoo>();
+            result.Should().Be(foo);
         }
 
         [Fact]

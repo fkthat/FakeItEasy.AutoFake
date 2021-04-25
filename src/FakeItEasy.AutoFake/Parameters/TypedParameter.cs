@@ -15,17 +15,11 @@ namespace FakeItEasy.AutoFake.Parameters
         public TypedParameter(Type type, object? value)
             : base(
                   pi => pi.ParameterType == type,
-                  type.CanBe(value) ? pi => value
+                  type.CanBe(value)
+                    ? pi => value
                     : throw new ArgumentException("Invalid value type.", nameof(value)))
         {
         }
-
-        private static bool ValidateValueType(Type type, object? value) =>
-            value is not null && type.IsAssignableFrom(value.GetType()) ||
-                // value is null
-                type.IsClass ||
-                type.IsInterface ||
-                type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
     }
 
     /// <summary>
